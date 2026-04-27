@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink - Support & Admin</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+
+    <style>
+        :root {
+            --primary: #12a39c;
+            --accent: #f39c12;
+            --dark: #1d1d1f;
+            --gray: #6b7280;
+            --border: #eeeeee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #fefefe;
+            color: var(--dark);
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            border-bottom: 1px solid var(--border);
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .logo span {
+            color: #111;
+        }
+
+        /* HERO SECTION */
+        .page-header {
+            background: linear-gradient(135deg, #12a39c 0%, #0e7e78 100%);
+            color: white;
+            padding: 80px 8%;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        /* CONTENT SECTION */
+        .container {
+            padding: 60px 8%;
+        }
+
+        .description {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .description-text {
+            flex: 1;
+        }
+
+        .description-text h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .description-text p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .description-img img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* BUTTON */
+        .btn-main {
+            padding: 8px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-main:hover {
+            background: var(--dark);
+        }
+
+        /* SERVICES TAGS */
+        .services-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--gray);
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .description {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+
+            .services-tags {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">S<span>killLink</span></div>
+            <button class="btn-main" @click="go('home.html')">Back Home</button>
+        </header>
+
+        <section class="page-header">
+            <h1>Support & Administration</h1>
+            <p>Stay organized and keep your customers happy with dedicated virtual assistance.</p>
+        </section>
+
+        <section class="container">
+            <div class="description">
+                <div class="description-text">
+                    <h2>Expert help for your daily tasks</h2>
+                    <p>
+                        Managing a business or a project can be overwhelming. Our student assistants are highly
+                        organized, detail-oriented, and ready to handle your administrative needs so you can focus on
+                        the big picture.
+                    </p>
+                    <p>
+                        <b>Admin & Support Services:</b>
+                    </p>
+                    <div class="services-tags">
+                        <span class="tag">Virtual Assistant</span>
+                        <span class="tag">Customer Support</span>
+                        <span class="tag">Data Entry</span>
+                        <span class="tag">Project Management</span>
+                        <span class="tag">Calendar Scheduling</span>
+                        <span class="tag">File Organization</span>
+                    </div>
+                    <p style="margin-top: 20px;">
+                        By hiring students for support roles, you get reliable help from tech-savvy individuals who are
+                        quick to learn your workflows and software.
+                    </p>
+                </div>
+                <div class="description-img">
+                    <img src="https://img.freepik.com/free-vector/customer-support-flat-design-illustration_23-2148889374.jpg"
+                        alt="Support illustration">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            methods: {
+                go(path) {
+                    window.location.href = path;
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

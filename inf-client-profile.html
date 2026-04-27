@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink - Client Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+    <style>
+        :root {
+            --primary: #149b91;
+            --bg: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #app {
+            display: flex;
+            width: 1150px;
+            gap: 40px;
+            align-items: flex-start;
+            padding: 20px;
+            position: relative;
+        }
+
+        .sidebar {
+            width: 240px;
+            padding-top: 150px;
+        }
+
+        .logo-top {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #009688;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .logo-top span {
+            color: #000;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 45px;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 41px;
+            width: 3px;
+            height: 45px;
+            background: #ddd;
+        }
+
+        .step-item.active:not(:last-child)::after {
+            background: var(--primary);
+        }
+
+        .step-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #999;
+            background: white;
+            z-index: 2;
+        }
+
+        .step-item.active .step-circle {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .step-label {
+            color: #999;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .active .step-label {
+            color: var(--primary);
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            flex: 1;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid #000;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .form-group label {
+            width: 180px;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 18px;
+            padding-top: 10px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 18px;
+            border: 1px solid #000;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20, 155, 145, 0.1);
+        }
+
+        .profile-icon {
+            width: 85px;
+            height: 85px;
+            border: 1px solid #000;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            color: #9ca3af;
+        }
+
+        .btn-continue {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 50px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            float: right;
+            transition: 0.3s;
+        }
+
+        .btn-continue:hover {
+            background: #0d8580;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .code-input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 25px;
+            border: 1px solid #000;
+            text-align: center;
+            font-size: 20px;
+            letter-spacing: 8px;
+            margin: 20px 0;
+        }
+
+        .confirm-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .confirm-btn:hover {
+            background: #0d8580;
+        }
+
+        .success-title {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .success-text {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="sidebar">
+            <div class="logo-top">S<span>killLink</span></div>
+            <div class="steps">
+                <div v-for="n in 3" :key="n" :class="['step-item', { active: currentStep >= n }]">
+                    <div class="step-circle">{{ n }}</div>
+                    <div class="step-label">{{ getStepLabel(n) }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div v-if="currentStep === 1">
+                <div class="profile-icon" @click="$refs.fileInput.click()">
+                    <img v-if="imageUrl" :src="imageUrl" style="width: 100%; height: 100%; object-fit: cover;">
+                    <i v-else class="fa-solid fa-camera" style="font-size: 30px;"></i>
+                </div>
+                <input type="file" ref="fileInput" @change="handleFileUpload" hidden>
+
+                <div class="form-group">
+                    <label>Full name</label>
+                    <div style="display: flex; gap: 10px; width: 100%;">
+                        <input v-model="form.fName" ref="fNameInput" placeholder="First name"
+                            @keydown.enter.prevent="lNameInput.focus()">
+                        <input v-model="form.lName" ref="lNameInput" placeholder="Last name"
+                            @keydown.enter.prevent="addressInput.focus()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input v-model="form.address" ref="addressInput" placeholder="e.g. Cairo, Egypt"
+                        @keydown.enter.prevent="langInput.focus()">
+                </div>
+                <div class="form-group">
+                    <label>Languages</label>
+                    <input v-model="tempLang" ref="langInput" placeholder="e.g. Arabic, English"
+                        @keydown.enter.prevent="aboutInput.focus()">
+                </div>
+                <div class="form-group">
+                    <label>About</label>
+                    <textarea v-model="form.about" ref="aboutInput" placeholder="Brief about you..." rows="3"
+                        @keydown.enter.prevent="handleNextStep"></textarea>
+                </div>
+            </div>
+
+            <div v-else-if="currentStep === 2">
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input v-model="form.companyName" ref="companyInput" placeholder="Enter company name"
+                        @keydown.enter.prevent="industryInput.focus()">
+                </div>
+                <div class="form-group">
+                    <label>Industry</label>
+                    <select v-model="form.industry" ref="industryInput" @keydown.enter.prevent="websiteInput.focus()">
+                        <option value="">Select Industry</option>
+                        <option>Technology & Software</option>
+                        <option>Marketing & Advertising</option>
+                        <option>Design & Creative</option>
+                        <option>Business & Finance</option>
+                        <option>Individual Client</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input v-model="form.website" ref="websiteInput" placeholder="https://example.com"
+                        @keydown.enter.prevent="descInput.focus()">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea v-model="form.desc" ref="descInput" placeholder="Describe your company or projects..."
+                        rows="4" @keydown.enter.prevent="handleNextStep"></textarea>
+                </div>
+            </div>
+
+            <div v-else-if="currentStep === 3">
+                <h2>Verify Phone Number</h2>
+                <p>Thank you for taking a moment to verify your phone number. <a href="#" style="color:#149b91">Learn
+                        more</a></p>
+
+                <div class="form-group" style="flex-direction: column; align-items: flex-start;">
+                    <label tyle="color: #000; font-size: 16px;">Enter country</label>
+                    <select v-model="form.country">
+                        <option value="">Select country</option>
+                        <option value="Egypt">Egypt (+20)</option>
+                        <option value="KSA">Saudi Arabia (+966)</option>
+                        <option value="UAE">UAE (+971)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="flex-direction: column; align-items: flex-start; width: 730px;">
+                    <label tyle="color: #000; font-size: 16px;">Enter Your Phone Number</label>
+                    <input v-model="form.phone" ref="phoneInput" placeholder="01XXXXXXXXX"
+                        @keydown.enter.prevent="handleVerification">
+                </div>
+                <p style="font-size: 13px; color: #6b7280; margin-top: 20px;">
+                    Your phone number will remain private and will not be shared or used for marketing purposes. <a
+                        href="#" style="color: #149b91;">Privacy Policy</a>
+                </p>
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button @click="handleVerification " class="btn-continue" style="float:none; flex:1;">Verify by
+                        Text</button>
+                    <button @click="handleVerification " class="btn-continue" style="float:none; flex:1;">Verify by
+                        Call</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center;">
+                <button v-if="currentStep > 1" @click="currentStep--"
+                    style="background:none; border:none; color:#999; cursor:pointer; font-weight:bold;">Back</button>
+                <div v-else></div>
+                <button v-if="currentStep < 3" class="btn-continue" @click="handleNextStep">Continue</button>
+            </div>
+        </div>
+
+        <div v-if="showModal" class="modal-overlay">
+            <div class="modal-card">
+                <span class="close-modal" @click="showModal = false">&times;</span>
+                <h2>Verify phone number</h2>
+                <p>Code sent to: <strong>+20-{{ form.phone }}</strong></p>
+                <input v-model="verificationCode" type="text" maxlength="6" class="code-input" placeholder="------"
+                    ref="codeInput" @keydown.enter.prevent="completeSignUp">
+                <button class="confirm-btn" style="width:300px; border-radius: 25px;" @click="completeSignUp">Confirm
+                    Code</button>
+                <p style="font-size: 13px; color: #6b7280; margin-top: 20px;">
+                    If you did not receive the code, please check the number and try again.
+                </p>
+            </div>
+        </div>
+
+        <div v-if="showSuccess" class="modal-overlay">
+            <div class="modal-card" style="padding: 50px 30px;">
+                <span class="close-modal" @click="showSuccess = false">&times;</span>
+                <h2 class="success-title">Verification complete !</h2>
+                <p class="success-text">Your phone number was verified successfully. Thank you!</p>
+               <button class="confirm-btn" style="padding: 10px 60px; border-radius: 15px;"
+                    @click="closeAllAndFinish">Ok</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+       const { createApp, ref, nextTick } = Vue;
+
+createApp({
+    setup() {
+
+        const currentStep = ref(1);
+        const showModal = ref(false);
+        const showSuccess = ref(false);
+        const verificationCode = ref('');
+        const imageUrl = ref(null);
+        const tempLang = ref('');
+
+        const fNameInput = ref(null);
+        const lNameInput = ref(null);
+        const addressInput = ref(null);
+        const langInput = ref(null);
+        const aboutInput = ref(null);
+        const companyInput = ref(null);
+        const industryInput = ref(null);
+        const websiteInput = ref(null);
+        const descInput = ref(null);
+        const phoneInput = ref(null);
+        const codeInput = ref(null);
+
+        const form = ref({
+            fName: '',
+            lName: '',
+            address: '',
+            about: '',
+            companyName: '',
+            industry: '',
+            website: '',
+            desc: '',
+            country: 'Egypt',
+            phone: ''
+        });
+
+        // =============================
+        // STEP CONTROL (FIXED)
+        // =============================
+        const handleNextStep = async () => {
+
+            if (currentStep.value === 1) {
+                if (!form.value.fName || !form.value.lName || !form.value.address || !form.value.about) {
+                    alert("Please fill all required personal information.");
+                    return;
+                }
+            }
+
+            if (currentStep.value === 2) {
+                if (!form.value.companyName || !form.value.industry || !form.value.website || !form.value.desc) {
+                    alert("Please fill company info.");
+                    return;
+                }
+            }
+
+            if (currentStep.value < 3) {
+                currentStep.value++;
+                await nextTick();
+
+                if (currentStep.value === 2) companyInput.value?.focus();
+                else if (currentStep.value === 3) phoneInput.value?.focus();
+            }
+        };
+
+        // =============================
+        // FILE UPLOAD
+        // =============================
+        const handleFileUpload = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                imageUrl.value = URL.createObjectURL(file);
+            }
+        };
+
+        // =============================
+        // PHONE VERIFY
+        // =============================
+        const handleVerification = () => {
+            if (!form.value.phone || form.value.phone.length < 11) {
+                alert("Enter valid phone number");
+                return;
+            }
+
+            showModal.value = true;
+
+            nextTick(() => {
+                codeInput.value?.focus();
+            });
+        };
+
+        const completeSignUp = () => {
+            if (verificationCode.value.length === 6) {
+                showModal.value = false;
+                showSuccess.value = true;
+            } else {
+                alert("Enter valid 6-digit code");
+            }
+        };
+
+        // =============================
+        // API CALL (FIXED)
+        // =============================
+  const closeAllAndFinish = async () => {
+   const token = localStorage.getItem("token");
+    const role = localStorage.getItem("user_role");
+
+    // 🔥 CHECK ROLE
+    if (role !== "client") {
+        alert("❌This account is not Client");
+        return;
+    }
+
+    // 🔥 CHECK TOKEN
+    if (!token) {
+        alert("❌ Session expired");
+        window.location.href = "Login.html";
+        return;
+    }
+    // تأكدي إن البيانات كاملة
+    const profileData = {
+        first_name: form.value.fName,
+        last_name: form.value.lName,
+        brief: form.value.aboutInput,
+        company_name: form.value.companyName,
+        industry: form.value.industry,
+       website: form.value.website,
+        company_description: form.value.desc,
+        phoneNumber: form.value.phoneNumber,
+        languages: tempLang.value ? tempLang.value.split(',').map(l => l.trim()) : []
+    };
+
+    try {
+
+                const response = await axios.put(
+                    "https://corsproxy.io/?https://skilllinkapi.ddns.net/client/profile",
+                    profileData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                console.log("SUCCESS:", response.data);
+
+                showSuccess.value = true;
+
+                setTimeout(() => {
+                    window.location.href = "http://localhost:5173/client-home";
+                }, 1500);
+
+            } catch (error) {
+
+                console.error("ERROR:", error);
+
+                if (error.response) {
+                    alert(error.response.data.message || "Server error");
+                } else {
+                    alert("Network error or CORS issue");
+                }
+            }
+        };
+        const getStepLabel = (n) => ["Personal Info", "Company Info", "Security"][n - 1];
+
+        return {
+            currentStep,
+            form,
+            showModal,
+            showSuccess,
+            verificationCode,
+            imageUrl,
+            tempLang,
+
+            fNameInput,
+            lNameInput,
+            addressInput,
+            langInput,
+            aboutInput,
+            companyInput,
+            industryInput,
+            websiteInput,
+            descInput,
+            phoneInput,
+            codeInput,
+
+            handleNextStep,
+            handleVerification,
+            completeSignUp,
+            handleFileUpload,
+            closeAllAndFinish,
+            getStepLabel
+        };
+    }
+}).mount('#app');
+              
+    </script>
+</body>
+
+</html>

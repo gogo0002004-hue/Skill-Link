@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+        }
+
+        input::-webkit-contacts-auto-fill-button,
+        input::-webkit-credentials-auto-fill-button {
+            display: none !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        .logo-top {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #0C9892; 
+            font-family: 'Dancing Script', cursive;
+           
+        }
+
+        .logo-top span {
+             color: #000;
+            
+        }
+
+        .main-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 140%;
+            max-width: 450px;
+        }
+
+        .character {
+            position: absolute;
+            z-index: 1;
+            width: 350px;
+            pointer-events: none;
+        }
+
+        .char-left {
+            left: -100px;
+            bottom: 70px;
+            z-index: 11;
+        }
+
+        .char-right {
+            right: -100px;
+            top: 40px;
+            z-index: 11;
+        }
+
+        .login-card {
+            position: relative;
+            z-index: 2;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 130%;
+            text-align: center;
+            border: 1px solid #111111;
+        }
+
+        h2 {
+            color: #008080;
+            font-size: 28px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .input-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            outline: none;
+            box-sizing: border-box;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .input-box input:focus {
+            border-color: #009688;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+
+        .Forget a {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #009688;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .Forget a:hover {
+            color: #00796b;
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: none;
+            background-color: #009688;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3);
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #00796b;
+            transform: translateY(-2px);
+        }
+
+        .divider {
+            height: 1px;
+            background: #1a1919;
+            margin: 25px 0;
+        }
+
+        .signup-text {
+            color: #080808;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .signup-text a {
+            color: #009688;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .signup-text a:hover {
+            color: #00796b;
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="logo-top">S<span>killLink</span></div>
+
+        <div class="main-container">
+            <img src="Images/Hidden person-cuate (3).png" class="character char-left">
+            <img src="Images/Hidden person-cuate (2).png" class="character char-right">
+
+            <div class="login-card">
+                <h2>Welcome back!</h2>
+
+                <form @submit.prevent="handleLogin">
+                    <div class="input-box">
+                        <input type="email" v-model="email" placeholder="Email" required>
+                    </div>
+
+                    <div class="input-box">
+                        <input :type="isVisible ? 'text' : 'password'" v-model="password" placeholder="Password" required>
+                        <i :class="['fas', isVisible ? 'fa-eye' : 'fa-eye-slash', 'toggle-password']"
+                            @click="isVisible = !isVisible"></i>
+                    </div>
+
+                    <div class="Forget"><a href="Forget.html">Forget Password?</a></div>
+
+                    <button type="submit" class="login-btn" :disabled="loading">
+                        {{ loading ? 'Logging in...' : 'Login' }}
+                    </button>
+
+                    <div class="divider"></div>
+                    <div class="signup-text">Don't have an account? <a href="Register.html">Create one</a></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                   email: "",
+    password: "",
+    role: "user",
+    isVisible: false,
+    loading: false
+}
+            },
+            methods: {
+              async handleLogin() {
+    if (!this.email || !this.password) {
+        alert("Please fill all fields ❌");
+        return;
+    }
+
+    this.loading = true;
+
+    const loginUrl = "https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/login";
+
+    try {
+        let response;
+        let userRole = "";
+
+        // Try Student first
+        try {
+            response = await axios.post(loginUrl, {
+                email: this.email.trim(),
+                password: this.password,
+                type: "user"
+            });
+            userRole = "user";
+        } catch {
+            // If Student fails, try Client
+            response = await axios.post(loginUrl, {
+                email: this.email.trim(),
+                password: this.password,
+                type: "client"
+            });
+            userRole = "client";
+        }
+
+        const token =
+            response.data.token ||
+            response.data.data?.token ||
+            response.data.accessToken;
+
+        if (!token) {
+            alert("Token missing from server response");
+            return;
+        }
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("user_role", userRole);
+        localStorage.setItem("user_email", this.email);
+
+        if (userRole === "user") {
+            window.location.href = " http://localhost:5173/";
+        } else {
+            window.location.href = "http://localhost:5173/client-home";
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Invalid email or password ❌");
+    } finally {
+        this.loading = false;
+    }
+              }}
+        }).mount("#app");
+    </script>
+</body>
+</html>

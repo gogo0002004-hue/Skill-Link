@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink - Professional Sign Up</title>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #149b91;
+            --bg: #f8f9fa;
+            --input-shadow: inset 0 2px 4px rgba(0, 0, 0, 0), 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--bg);
+          
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #app {
+            display: flex;
+            width: 1150px;
+            gap: 40px;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        /* Sidebar Progress */
+        .sidebar {
+            width: 240px;
+            padding-top: 150px;
+        }
+
+        .logo-top {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #009688;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .logo-top span {
+            color: #000;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 45px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 41px;
+            width: 3px;
+            height: 45px;
+            background: var(--primary);
+        }
+
+        .step-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary);
+            background: white;
+            z-index: 2;
+        }
+
+        .step-item.active .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+
+        .step-label {
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Main Card */
+        .form-card {
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            flex: 1;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid #000000;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .form-group label {
+            width: 180px;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .input-container {
+            flex: 1;
+            position: relative;
+            display: flex;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            box-shadow: var(--input-shadow);
+            outline: none;
+            background: #fff;
+            border: 1px solid #000000;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20, 155, 145, 0.1);
+        }
+
+        .profile-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-icon {
+            width: 85px;
+            height: 85px;
+            border: 1px solid #151515;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 28px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .name-row {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .plus-btn {
+            width: 42px;
+            height: 42px;
+            border: 1.5px solid #000;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 22px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-field {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid #111111;
+            border-radius: 12px;
+            padding-left: 15px;
+            margin-bottom: 12px;
+            box-shadow: var(--input-shadow);
+        }
+
+        .social-field i {
+            width: 20px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .social-field input {
+            border: none;
+            box-shadow: none;
+        }
+
+        .btn-continue {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 50px;
+            border-radius: 30px;
+            font-size: 19px;
+            font-weight: 600;
+            cursor: pointer;
+            float: right;
+            margin-top: 20px;
+        }
+
+        .btn-continue:hover {
+            background-color: #0d8580;
+            transform: translateY(-2px);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            width: 400px;
+            text-align: center;
+            position: relative;
+            border: 1px solid #000;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: 1px solid #000;
+            text-align: center;
+            font-size: 20px;
+            letter-spacing: 8px;
+            margin: 20px 0;
+            outline: none;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            #app {
+                flex-direction: column;
+                width: 95%;
+            }
+
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding-top: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="sidebar">
+            <div class="logo-top">S<span>killLink</span></div>
+            <div class="steps">
+                <div v-for="n in 3" :key="n" :class="['step-item', { active: currentStep >= n }]"
+                    @click="jumpToStep(n)">
+                    <div class="step-circle">{{ n }}</div>
+                    <div class="step-label">{{ getStepLabel(n) }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div v-if="currentStep === 1">
+                <div class="profile-section">
+                    <div class="profile-icon" @click="$refs.fileInput.click()"
+                        style="cursor: pointer; overflow: hidden;">
+                        <img v-if="imageUrl" :src="imageUrl" style="width: 100%; height: 100%; object-fit: cover;">
+                        <i v-else class="fa-solid fa-camera"></i>
+                    </div>
+                </div>
+                <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" style="display: none;">
+
+                <div class="form-group">
+                    <label>Full name</label>
+                    <div style="display: flex; gap: 10px; width: 100%;">
+                        <input v-model="form.fName" ref="fNameInput" placeholder="First name"
+                            @keydown.enter.prevent="lNameInput.focus()">
+                        <input v-model="form.lName" ref="lNameInput" placeholder="Last name"
+                            @keydown.enter.prevent="addressInput.focus()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input v-model="form.address" ref="addressInput" placeholder="e.g. Cairo, Egypt"
+                        @keydown.enter.prevent="dateInput.focus()">
+                </div>
+                <div class="form-group">
+                    <label>Date of birth</label>
+                    <div class="input-container">
+                        <input type="date" v-model="form.dob" ref="dateInput"
+                            @keydown.enter.prevent="langInput.focus()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Languages</label>
+                    <input v-model="tempLang" ref="langInput" placeholder="e.g. Arabic, English"
+                        @keydown.enter.prevent="bioInput.focus()">
+                </div>
+                <div class="form-group">
+                    <label> About</label>
+                    <textarea v-model="form.personalBio" ref="bioInput" placeholder="Brief about you..." rows="3"
+                        @keydown.enter.prevent="handleNextStep"></textarea>
+                </div>
+            </div>
+
+            <div v-else-if="currentStep === 2">
+                <div class="form-group">
+                    <label>Category</label>
+                    <div style="display: flex; width: 100%;">
+                        <select v-model="form.category" ref="CategoryInput"
+                            @keydown.enter.prevent="SkillsInput.focus()">
+                            <option value="">Select category</option>
+                            <option>Graphic Design</option>
+                            <option>Web Development</option>
+                        </select>
+                        <button class="plus-btn" @click.prevent>+</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Skills</label>
+                    <div style="display: flex; width: 100%;">
+                        <input v-model="tempSkill" placeholder="Add skill" ref="SkillsInput"
+                            @keydown.enter.prevent="UniversityInput.focus()">
+                        <button class="plus-btn" @click.prevent>+</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Education</label>
+                    <div style="width: 100%;">
+                        <input v-model="form.uni" placeholder="University / Institute"
+                            style="margin-bottom: 20px; width: 550px;" ref="UniversityInput"
+                            @keydown.enter.prevent="CollegeInput.focus()">
+                        <input v-model="form.college" placeholder="College" style="margin-bottom: 20px; width: 550px;"
+                            ref="CollegeInput" @keydown.enter.prevent="YearsInput.focus()">
+                        <input v-model="form.years" placeholder="Years of study ex: 2021-2024"
+                            style="margin-bottom: 18px; width: 550px;" ref="YearsInput"
+                            @keydown.enter.prevent="LinkedinInput.focus()">
+                    </div>
+                </div>
+
+                <div class="form-group" style="align-items: flex-start; margin-top: 30px;">
+                    <label>Social Links</label>
+                    <div style="width: 100%;">
+                        <div class="social-field"><i class="fa-brands fa-linkedin-in"></i><input v-model="form.linkedin"
+                                placeholder="Linkedin URL" ref="LinkedinInput"
+                                @keydown.enter.prevent="GitHubInput.focus()"></div>
+                        <div class="social-field"><i class="fa-brands fa-github"></i><input v-model="form.github"
+                                placeholder="GitHub URL" ref="GitHubInput"
+                                @keydown.enter.prevent="BehanceInput.focus()"></div>
+                        <div class="social-field"><i class="fa-brands fa-behance"></i><input v-model="form.behance"
+                                placeholder="Behance URL" ref="BehanceInput" @keydown.enter.prevent="handleNextStep">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-else-if="currentStep === 3">
+                <h2>Verify Phone Number</h2>
+                <p>Thank you for taking a moment to verify your phone number. <a href="#" style="color:#149b91">Learn
+                        more</a></p>
+
+                <div class="form-group" style="flex-direction: column; align-items: flex-start;">
+                    <label tyle="color: #000; font-size: 16px;">Enter country</label>
+                    <select v-model="form.country">
+                        <option value="">Select country</option>
+                        <option value="Egypt">Egypt (+20)</option>
+                        <option value="KSA">Saudi Arabia (+966)</option>
+                        <option value="UAE">UAE (+971)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="flex-direction: column; align-items: flex-start; width: 730px;">
+                    <label tyle="color: #000; font-size: 16px;">Enter Your Phone Number</label>
+                    <input v-model="form.phone" ref="phoneInput" placeholder="01XXXXXXXXX"
+                        @keydown.enter.prevent="handleVerification">
+                </div>
+                <p style="font-size: 13px; color: #6b7280; margin-top: 20px;">
+                    Your phone number will remain private and will not be shared or used for marketing purposes. <a
+                        href="#" style="color: #149b91;">Privacy Policy</a>
+                </p>
+                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                    <button @click="handleVerification " class="btn-continue"
+                        style="float:none; flex:1;">Verify by Text</button>
+                    <button @click="handleVerification " class="btn-continue"
+                        style="float:none; flex:1;">Verify by Call</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; display: flex; justify-content: space-between; align-items: center;">
+                <button v-if="currentStep > 1" @click="currentStep--"
+                    style="background:none; border:none; color:#999; cursor:pointer; font-weight:bold;">Back</button>
+                <div v-else></div>
+                <button v-if="currentStep < 3" class="btn-continue" @click="handleNextStep">Continue</button>
+            </div>
+        </div>
+
+        <div v-if="showModal" class="modal-overlay">
+            <div class="modal-card">
+                <span class="close-modal" @click="showModal = false">&times;</span>
+                <h2>Verify phone number</h2>
+                <p>Code sent to: <strong>+20-{{ form.phone }}</strong></p>
+                <input v-model="verificationCode" type="text" maxlength="6" class="code-input" placeholder="------"
+                    ref="codeInput" @keydown.enter.prevent="completeSignUp">
+                <button class="confirm-btn" style="width:300px; border-radius: 25px;" @click="completeSignUp">Confirm
+                    Code</button>
+                <p style="font-size: 13px; color: #6b7280; margin-top: 20px;">
+                    If you did not receive the code, please check the number and try again.
+                </p>
+            </div>
+        </div>
+
+        <div v-if="showSuccess" class="modal-overlay">
+            <div class="modal-card" style="padding: 50px 30px;">
+                <span class="close-modal" @click="showSuccess = false">&times;</span>
+                <h2 class="success-title">Verification complete !</h2>
+                <p class="success-text">Your phone number was verified successfully. Thank you!</p>
+                <button class="confirm-btn" style="padding: 10px 60px; border-radius: 15px;"
+                    @click="closeAllAndFinish">Ok</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+const { createApp, ref, nextTick } = Vue;
+
+createApp({
+    setup() {
+
+        const currentStep = ref(1);
+        const showModal = ref(false);
+        const showSuccess = ref(false);
+        const verificationCode = ref('');
+        const imageUrl = ref(null);
+        const tempLang = ref('');
+        const tempSkill = ref('');
+
+        // Inputs refs
+        const fNameInput = ref(null);
+        const lNameInput = ref(null);
+        const addressInput = ref(null);
+        const dateInput = ref(null);
+        const langInput = ref(null);
+        const bioInput = ref(null);
+        const CategoryInput = ref(null);
+        const SkillsInput = ref(null);
+        const UniversityInput = ref(null);
+        const CollegeInput = ref(null);
+        const YearsInput = ref(null);
+        const LinkedinInput = ref(null);
+        const GitHubInput = ref(null);
+        const BehanceInput = ref(null);
+        const phoneInput = ref(null);
+        const codeInput = ref(null);
+
+        const form = ref({
+            fName: '',
+            lName: '',
+            address: '',
+            dob: '',
+            personalBio: '',
+            category: '',
+            uni: '',
+            college: '',
+            years: '',
+            linkedin: '',
+            github: '',
+            behance: '',
+            country: '',
+            phone: ''
+        });
+
+        // =============================
+        // NEXT STEP VALIDATION
+        // =============================
+        const handleNextStep = async () => {
+            if (currentStep.value === 1) {
+                if (!form.value.fName || !form.value.lName || !form.value.address) {
+                    alert("Please fill all required personal information.");
+                    return;
+                }
+            }
+
+            if (currentStep.value === 2) {
+                if (!form.value.category || !form.value.uni) {
+                    alert("Please fill required professional info.");
+                    return;
+                }
+            }
+
+            if (currentStep.value < 3) {
+                currentStep.value++;
+                await nextTick();
+
+                if (currentStep.value === 2) CategoryInput.value?.focus();
+                else if (currentStep.value === 3) phoneInput.value?.focus();
+            }
+        };
+
+        // =============================
+        // IMAGE UPLOAD
+        // =============================
+        const handleFileUpload = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                imageUrl.value = URL.createObjectURL(file);
+            }
+        };
+
+        // =============================
+        // PHONE VERIFICATION
+        // =============================
+        const handleVerification = () => {
+            if (!form.value.phone || form.value.phone.length < 11) {
+                alert("Enter valid phone number");
+                return;
+            }
+
+            showModal.value = true;
+            nextTick(() => codeInput.value?.focus());
+        };
+
+        const completeSignUp = () => {
+            if (verificationCode.value.length === 6) {
+                showModal.value = false;
+                showSuccess.value = true;
+            } else {
+                alert("Enter valid 6-digit code");
+            }
+        };
+
+        // =============================
+        // API CALL (IMPORTANT PART)
+        // =============================
+        const closeAllAndFinish = async () => {
+
+            const token = localStorage.getItem("token");
+            console.log("TOKEN:", token);
+
+            if (!token) {
+                alert("User not logged in!");
+                return;
+            }
+
+            const profileData = {
+              first_name: form.value.fName,
+                last_name: form.value.lName,
+                address: form.value.address,
+                brief: form.value.personalBio,
+                university: form.value.uni,
+                college: form.value.college,
+                study_years: form.value.years,
+                phoneNumber: form.value.phoneNumber,
+                speciality: form.value.category,
+                social_links: {
+                   linkedin_url: form.value.linkedin,
+                    github_url: form.value.github,
+                    behance_url: form.value.behance
+                }
+            };
+
+            try {
+
+                const response = await axios.put(
+                    "https://corsproxy.io/?https://skilllinkapi.ddns.net/user/profile",
+                    profileData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                console.log("SUCCESS:", response.data);
+
+                showSuccess.value = true;
+
+                setTimeout(() => {
+                    window.location.href = " http://localhost:5173/";
+                }, 1500);
+
+            } catch (error) {
+
+                console.error("ERROR:", error);
+
+                if (error.response) {
+                    alert(error.response.data.message || "Server error");
+                } else {
+                    alert("Network error or CORS issue");
+                }
+            }
+        };
+
+        return {
+            currentStep,
+            form,
+            imageUrl,
+            tempLang,
+            tempSkill,
+            showModal,
+            showSuccess,
+            verificationCode,
+
+            fNameInput,
+            lNameInput,
+            addressInput,
+            dateInput,
+            langInput,
+            bioInput,
+            CategoryInput,
+            SkillsInput,
+            UniversityInput,
+            CollegeInput,
+            YearsInput,
+            LinkedinInput,
+            GitHubInput,
+            BehanceInput,
+            phoneInput,
+            codeInput,
+
+            handleNextStep,
+            handleFileUpload,
+            handleVerification,
+            completeSignUp,
+            closeAllAndFinish,
+
+            getStepLabel: (n) => ["Personal Info", "Professional Info", "Security"][n - 1]
+        };
+    }
+}).mount('#app');
+</script>
+</body>
+
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Work - SkillLink</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        :root {
+            --primary: #12a39c;
+            --dark: #1d1d1f;
+            --gray: #6b7280;
+            --light-bg: #f9fafb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: var(--dark);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+           top: 30px;
+            left: 50px;
+            font-size: 26px;
+            font-weight:600;
+            cursor: pointer;
+            color: #0C9892; 
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .logo span {
+            color:#1d1d1f;
+        }
+
+        .user-menu {
+            font-size: 14px;
+            color: var(--gray);
+            cursor: pointer;
+        }
+
+        /* Search & Filter Section */
+        .search-container {
+            background: #fff;
+            padding: 60px 8%;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .search-container h1 {
+            margin-bottom: 25px;
+        }
+
+        .search-container h1 span {
+            color: var(--primary);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 25px;
+
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: 0.3s;
+
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(18, 163, 156, 0.1);
+        }
+
+        .filter-tags {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 800px;
+        }
+
+        .tag {
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: #f3f4f6;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tag:hover {
+            background: #e5e7eb;
+        }
+
+        .tag.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Jobs Grid */
+        .jobs-section {
+            padding: 40px 8%;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+
+        .job-card {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .job-card h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .job-meta i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        .job-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .budget {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .apply-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            float: right;
+            transition: 0.3s;
+        }
+
+        .apply-btn:hover {
+            background: #0e8c86;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-btns button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-btns .signup {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-btns .login {
+            background: #eee;
+            color: var(--dark);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .sidebar {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            height: fit-content;
+            border: 1px solid #eee;
+        }
+
+        .sidebar h4 {
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" v-cloak>
+        <header>
+            <div class="logo" @click="go('index.html')">S<span>killLink</span></div>
+            <div class="user-menu" @click="go('login.html')"><i class="fas fa-user-circle"></i> My Account</div>
+        </header>
+
+        <div v-if="showAuthModal" class="modal-overlay" @click.self="showAuthModal = false">
+            <div class="modal-card">
+                <i class="fas fa-lock" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
+                <h2>Join SkillLink</h2>
+                <p style="color: gray; font-size: 14px; margin-top: 10px;">You need to have a student account to apply
+                    for projects and start earning.</p>
+                <div class="modal-btns">
+                    <button class="signup" @click="go('Register.html')">Create Account</button>
+                    <button class="login" @click="go('login.html')">Login</button>
+                    <p @click="showAuthModal = false"
+                        style="cursor:pointer; margin-top:15px; font-size:12px; color:gray; text-decoration: underline;">
+                        Maybe later</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <h1>Find your next <span>project</span></h1>
+            <div class="search-box">
+                <input type="text" v-model="searchQuery"
+                    placeholder="Search for jobs (e.g. Logo Design, Web Development...)">
+            </div>
+            <div class="filter-tags">
+                <div class="tag" :class="{active: selectedCategory === 'All'}" @click="selectedCategory = 'All'">All
+                </div>
+                <div class="tag" v-for="cat in categories" :class="{active: selectedCategory === cat}"
+                    @click="selectedCategory = cat">{{ cat }}</div>
+            </div>
+        </div>
+
+        <main class="jobs-section">
+            <div class="jobs-list">
+                <div v-if="filteredJobs.length === 0" style="text-align: center; padding: 50px;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" width="100"
+                        style="opacity: 0.3;">
+                    <p style="margin-top: 15px; color: gray;">No jobs found matching your search.</p>
+                </div>
+
+                <div class="job-card" v-for="job in filteredJobs" :key="job.id">
+                    <div class="job-meta">
+                        <span><i class="fas fa-clock"></i> {{ job.posted }}</span>
+                        <span><i class="fas fa-layer-group"></i> {{ job.category }}</span>
+                    </div>
+                    <h3>{{ job.title }}</h3>
+                    <p class="job-desc">{{ job.description }}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="budget">${{ job.budget }}</div>
+                        <button class="apply-btn" @click="applyNow(job.title)">Apply Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="sidebar">
+                <h4>Work Statistics</h4>
+                <p style="font-size: 14px; color: var(--gray); margin-top: 10px; line-height: 2;">
+                    Total Jobs: <b>{{ jobs.length }}</b><br>
+                    Available for you: <b>{{ filteredJobs.length }}</b>
+                </p>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    searchQuery: '',
+                    selectedCategory: 'All',
+                    showAuthModal: false,
+                    isLoggedIn: false,
+                    categories: ['Programming', 'Design', 'Writing', 'Marketing', 'Video'],
+                    jobs: [
+                        // Marketing
+                        { id: 1, title: 'Instagram Content Strategy', category: 'Marketing', budget: 150, posted: '2h ago', description: 'Seeking a student to plan a month of aesthetic posts and stories for a local bakery.' },
+                        { id: 2, title: 'SEO Keyword Research', category: 'Marketing', budget: 70, posted: '5h ago', description: 'Help a new blog identify the best keywords to rank on Google. Tools provided.' },
+                        { id: 3, title: 'Facebook Ad Copywriter', category: 'Marketing', budget: 45, posted: '1d ago', description: 'Write 5 compelling variations of ad copy for a fitness app launch.' },
+
+                        // Programming
+                        { id: 4, title: 'Simple Python Script', category: 'Programming', budget: 100, posted: '1h ago', description: 'Need a script to automate data cleaning from multiple Excel files.' },
+                        { id: 5, title: 'Responsive CSS Fixes', category: 'Programming', budget: 60, posted: '4h ago', description: 'Fix layout issues on mobile devices for a landing page. Pure CSS/HTML.' },
+                        { id: 6, title: 'Vue.js Component Build', category: 'Programming', budget: 200, posted: '1d ago', description: 'Develop a reusable chart component using Chart.js and Vue 3.' },
+
+                        // Design
+                        { id: 7, title: 'Logo Design for Startup', category: 'Design', budget: 85, posted: '3h ago', description: 'Create a modern, minimalist logo for a student-led AI startup.' },
+                        { id: 8, title: 'Twitch Overlay Graphics', category: 'Design', budget: 50, posted: '6h ago', description: 'Design custom overlays, alerts, and panels for a gaming streamer.' },
+                        { id: 9, title: 'Slide Deck Refinement', category: 'Design', budget: 40, posted: '12h ago', description: 'Polish a 15-slide PowerPoint presentation for a business pitch.' },
+
+                        // Writing
+                        { id: 10, title: 'English to Arabic Translation', category: 'Writing', budget: 90, posted: '2h ago', description: 'Translate a 2,000-word product manual. Must be fluent in technical Arabic.' },
+                        { id: 11, title: 'Gaming News Articles', category: 'Writing', budget: 30, posted: '8h ago', description: 'Write three 500-word articles about the latest PlayStation releases.' },
+
+                        // Video
+                        { id: 12, title: 'TikTok Video Editor', category: 'Video', budget: 65, posted: '1h ago', description: 'Edit raw vlog footage into 3 snappy, viral-style TikToks with captions.' },
+                        { id: 13, title: 'YouTube Intro/Outro', category: 'Video', budget: 110, posted: '1d ago', description: 'Create a 5-second animated intro and a matching end screen for a tech channel.' },
+                    ]
+                }
+            },
+            computed: {
+                filteredJobs() {
+                    return this.jobs.filter(job => {
+                        const matchesSearch = job.title.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        const matchesCategory = this.selectedCategory === 'All' || job.category === this.selectedCategory;
+                        return matchesSearch && matchesCategory;
+                    });
+                }
+            },
+            methods: {
+                go(path) {
+                    window.location.href = path;
+                },
+                applyNow(jobTitle) {
+                    if (!this.isLoggedIn) {
+                        this.showAuthModal = true;
+                    } else {
+                        alert(`Application sent for: ${jobTitle}`);
+                    }
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

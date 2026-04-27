@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink - Freelancing for Students</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        section {
+            scroll-margin-top: 300px;
+        }
+
+        :root {
+            --primary: #12a39c;
+            --primary-light: #e6f7f6;
+            --dark: #1d1d1f;
+            --gray: #6b7280;
+            --border: #eeeeee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+        body {
+            background: #fdfdfd;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* HEADER */
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            border-bottom: 1px solid #a09a9aae;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+       .logo {
+           
+            top: 30px;
+            left: 50px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #0C9892; 
+            font-family: 'Dancing Script', cursive;
+           
+        }
+
+        .logo span {
+             color: #000;
+            
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            font-size: 15px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .auth button {
+            padding: 8px 22px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .login {
+            border: 1px solid #000000cb;
+            background: #fff;
+            margin-right: 10px;
+        }
+
+        .login:hover {
+            border: 1px solid #12a39c;
+            background: #ffff;
+            color: #12a39c;
+
+        }
+
+        .signup {
+            background: var(--primary);
+            color: #fff;
+            border: 1px solid #000000cb;
+        }
+
+        .signup:hover {
+            border: 1px solid #12a39c;
+            background: #ffff;
+            color: #12a39c;
+
+
+        }
+
+        /* HERO */
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 90px 8% 50px;
+            gap: 40px;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: var(--gray);
+            margin-bottom: 35px;
+            max-width: 480px;
+        }
+
+        .hero-btns button {
+            padding: 14px 40px;
+            border-radius: 35px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: medium;
+        }
+
+        .hire {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            margin-right: 15px;
+        }
+
+        .hire:hover {
+            border: 1px solid #12a39c;
+            background: #ffff;
+            color: #12a39c;
+
+        }
+
+        .work {
+            padding: 14px 40px;
+            border: 1px solid #ccc;
+            border-radius: 35px;
+            background: white;
+            cursor: pointer;
+            font-size: medium;
+        }
+
+        .work:hover {
+            border: 1px solid #12a39c;
+            background: #ffff;
+            color: #12a39c;
+        }
+
+        .hero-img {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .circle {
+            width: 480px;
+            height: 480px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: relative;
+            overflow: visible;
+        }
+
+        .circle img {
+            width: 115%;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scale(1.2);
+            z-index: 3;
+        }
+
+        .dots {
+            position: absolute;
+            display: grid;
+            grid-template-columns: repeat(4, 16px);
+            gap: 15px;
+            z-index: 1;
+        }
+
+        .dots.top {
+            top: 20px;
+            right: -25px;
+        }
+
+        .dots.bottom {
+            bottom: 15px;
+            left: 155px;
+        }
+
+        .dots div {
+            width: 14px;
+            height: 14px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        /* الروبوت الصغير  */
+        .floating-bot {
+            position: fixed;
+            bottom: 30px;
+            right: 10px;
+            width: 80px;
+            height: 80px;
+            z-index: 1000;
+            cursor: pointer;
+            border: 2px solid #12a39c;
+            border-radius: 50%;
+            padding: 15px;
+            animation: floatSide 3s ease-in-out infinite;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .floating-bot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+
+        /* ANNOUNCEMENT */
+
+        .announce {
+            background: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            margin: 12px 8%;
+            margin-top: 5px;
+            border: 2px solid #a09a9ac0;
+            padding: 15px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 22px;
+        }
+
+        .announce a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* SECTIONS */
+
+        .section-padding {
+            padding: 100px 8%;
+        }
+
+        .section-title {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 20px;
+
+            position: relative;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 100px;
+            height: 5px;
+            background: var(--primary);
+            position: absolute;
+            top: -20px;
+            left: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+        }
+
+
+
+        /* MARKETPLACE */
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+        }
+
+        .market-card {
+            background: #ffffff;
+            border: 2px solid #a09a9aae;
+            padding: 50px 50px;
+            border-radius: 12px;
+            text-align: left;
+            transition: .4s;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            z-index: 1;
+        }
+
+        .market-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 30px 30px rgba(0, 0, 0, 0.05);
+
+        }
+
+        .market-card i {
+            font-size: 30px;
+            color: #333;
+            margin-bottom: 19px;
+            display: block;
+        }
+
+        .market-card span {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+
+        }
+
+        .market-card:hover i,
+        .market-card:hover span {
+            color: var(--primary);
+        }
+
+        /* dots */
+        .dots-decorator {
+            display: grid;
+            grid-template-columns: repeat(8, 16px);
+            gap: 40px;
+            margin-top: -100px;
+            margin-bottom: 25px;
+            margin-right: -90px;
+            justify-content: flex-end;
+            z-index: -1;
+        }
+
+        .dots-decorator div {
+            width: 15px;
+            height: 15px;
+            border-radius: 90%;
+            background-color: #12a39c33;
+        }
+
+        /* HOW IT WORKS */
+
+        .how-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            margin-top: -240px;
+        }
+
+        .tabs {
+            border: 1px solid #111;
+            display: flex;
+            background: #ffff;
+            padding: 0px;
+            border-radius: 30px;
+        }
+
+        .tab {
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+
+
+        }
+
+        .step {
+            background: var(--primary);
+            color: #fff;
+            padding: 50px 50px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .step i {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        /* FEATURES */
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+
+
+        }
+
+        .feat-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+            background: #fff;
+            border: 1px solid #a09a9aae;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: right;
+            padding: 20px;
+            transition: 0.4s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            min-height: 180px;
+        }
+
+        .feat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feat-card:not(.feat-tall) {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            padding: 20px 30px;
+        }
+
+        .feat-card:not(.feat-tall) img {
+            margin-bottom: 0;
+            margin-left: 20px;
+            width: 150px;
+        }
+
+        .feat-tall {
+            grid-row: span 2;
+        }
+
+        .feat-card img {
+            width: 220px;
+            margin-bottom: -20px;
+            margin-right: 40px;
+        }
+
+        .feat-card h3 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-left: 35px;
+
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            transition: 0.3s;
+            border-radius: 20px;
+        }
+
+        b {
+            font-size: x-large;
+
+        }
+
+        .feat-card:hover .overlay {
+            opacity: 1;
+        }
+
+        /* title dot*/
+        .title-dots {
+            display: grid;
+            grid-template-columns: repeat(8, 16px);
+            gap: 40px;
+            margin-top: -170px;
+            margin-bottom: 25px;
+            margin-right: -80px;
+            justify-content: flex-end;
+            z-index: -1;
+
+        }
+
+        .title-dots div {
+            width: 15px;
+            height: 15px;
+            border-radius: 90%;
+            background-color: #12a39c33;
+
+        }
+
+        /* CTA */
+
+        .cta {
+            position: relative;
+            margin: -160px 8% 80px;
+            background: linear-gradient(90deg, #128c86 0%, #63c2b8 100%);
+            padding: 100px 100px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+            z-index: 10;
+        }
+
+        .cta h2 {
+            font-size: 35px;
+        }
+
+        .cta button {
+            padding: 12px 20px;
+            border-radius: 60px;
+            border: 2px solid #111;
+            font-weight: 400;
+            font-size: 26px;
+            color: #111;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .cta button:hover {
+            border: 1px solid #12a39c;
+            background: #ffff;
+            color: #12a39c;
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 60px 8% 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 30px;
+            background: #fcfcfc;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-desc {
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .social-icons {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: flex-start;
+        }
+
+        .social-icons a {
+            width: 36px;
+            height: 36px;
+            background-color: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        footer .logo {
+            font-size: 28px;
+        }
+
+        footer h4 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 8px;
+            color: var(--gray);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        h5 {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 400;
+            color: #888;
+            margin-top: 10px;
+            padding-top: 25px;
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:900px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .market-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps,
+            .features-grid,
+            footer {
+                grid-template-columns: 1fr;
+            }
+
+            .cta {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            .market-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <header>
+
+            <div class="logo">S<span>killLink</span></div>
+
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#explore">Explore</a></li>
+                    <li><a href="#feature">For Features</a></li>
+                    <li><a href="#how">How it works</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth">
+                <button class="login" @click="go('login.html')">Login</button>
+                <button class="signup" @click="go('Register.html')">Sign up</button>
+            </div>
+
+        </header>
+
+        <section class="hero">
+
+            <div>
+                <h1>The Best Freelancing <br> Platform for <span>Students</span></h1>
+                <p>SkillLink connects students from different fields with clients looking for freelance services.</p>
+
+                <div class="hero-btns">
+                    <button class="hire" @click="go('HireFreelancers.html')">Hire freelancers</button>
+                    <button class="work" @click="go('FindWork.html')">Find work</button>
+                </div>
+            </div>
+
+            <div class="hero-img">
+
+                <div class="dots top">
+                    <div v-for="n in 16"></div>
+                </div>
+
+                <div class="circle">
+                    <img src="Images/student girl with backpack and_19164931.png">
+                </div>
+
+                <div class="dots bottom">
+                    <div v-for="n in 16"></div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <div class="announce">
+            Need a task done? Find talented students offering affordable, high-quality services.
+            <a href="#" @click="joinAsClient()">Join as a client</a>
+        </div>
+        <div class="floating-bot">
+            <img src="Images/Chat bot.png" alt="Chatbot">
+        </div>
+        <section id="explore" class="section-padding">
+
+            <h2 class="section-title">Explore the marketplaces</h2>
+
+            <div class="market-grid">
+
+                <div class="market-card" @click="go ('Programming.html')"><i
+                        class="fas fa-laptop-code"></i><span>Programming & Technology</span></div>
+                <div class="market-card" @click="go ('Design.html')"><i class="fas  fa-palette"></i><span>Design &
+                        Creative</span></div>
+                <div class="market-card" @click="go ('Writing.html')"><i class="fas fa-pen-nib"></i><span>Writing &
+                        Translation</span></div>
+                <div class="market-card" @click="go ('Marketing.html')"><i
+                        class="fas fa-solid fa-chart-simple"></i><span>Marketing & Sales</span></div>
+                <div class="market-card" @click="go ('Support.html')"><i class="fas fa-headset"></i><span>Support &
+                        Administration</span></div>
+                <div class="market-card" @click="go ('Audio.html')"><i class="fas fa-film"></i><span>Audio &
+                        Video</span></div>
+                <div class="market-card" @click="go ('Business.html')"><i
+                        class="fas fa-building-columns"></i><span>Business & Finance</span></div>
+                <div class="market-card" @click="go ('Education.html')"><i
+                        class="fas fa-person-chalkboard"></i><span>Education & Training</span></div>
+                <div class="market-card" @click="go ('Legal.html')"><i
+                        class="fas fa-scale-unbalanced"></i><span>Legal</span></div>
+                <div class="market-card" @click="go ('Engineering.html')"><i class="fas fa-gear"></i><span>Engineering &
+                        Arch</span></div>
+
+            </div>
+            <div class="dots-decorator explore-dots">
+                <div v-for="n in 64"></div>
+            </div>
+        </section>
+
+        <section id="how" class="section-padding">
+            <div class="dots-decorator how-dots">
+            </div>
+            <div class="how-header">
+
+                <h2 class="section-title">How it works</h2>
+
+                <div class="tabs">
+                    <div class="tab" :class="{active: activeTab === 'students'}" @click="activeTab='students'">
+                        ForStudents</div>
+                    <div class="tab" :class="{active: activeTab === 'clients'}" @click="activeTab='clients'">For Clients
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="steps">
+
+                <div class="step" v-for="step in displayedSteps">
+                    <i :class="step.icon"></i>
+                    <p>{{step.text}}</p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="feature" class="section-padding">
+
+            <h2 class="section-title">SkillLink key features</h2>
+
+            <div class="features-grid">
+
+                <div class="feat-card feat-tall"
+                    style="display: flex; flex-direction: column; gap: 20px;  width: 650px;  height: 300px;  ">
+
+
+                    <img src="Images/Knowledge-cuate.png">
+
+                    <h3>Built for Students</h3>
+
+                    <div class="overlay">
+                        <p><b>Built for Students</b><br>
+                            A freelancing platform designed especially
+                            for students — simple, supportive and easy
+                            to start .</p>
+                    </div>
+
+                </div>
+
+                <div class="feat-card">
+
+                    <img src="Images/Agreement-cuate.png">
+
+                    <h3>Real Projects, Real Experience</h3>
+
+                    <div class="overlay">
+                        <p><b>Real Projects</b><br>
+                            Gain hands-on experience by workingon real projects
+                            and building your portfolio while studying .</p>
+                    </div>
+
+                </div>
+
+                <div class="feat-card">
+
+                    <img src="Images/Work time-cuate.png">
+
+                    <h3>Save Time, Learn Remotely</h3>
+
+                    <div class="overlay">
+                        <p><b>Learn Remotely</b><br>
+                            Gain hands-on experience by workingon real projects
+                            and building your portfolio while studying .</p>
+                    </div>
+
+                </div>
+
+                <div class="feat-card feat-tall" style="display: flex; flex-direction: column; gap: 20px;  width: 650px;
+            height: 300px; margin-top: -109px;  ">
+
+                    <img src="Images/Cyber attack-cuate.png">
+
+                    <h3>Secure Payment System</h3>
+
+                    <div class="overlay">
+                        <p><b>Secure Payments</b><br>
+                            Safe and reliable payments — fundsare
+                            protected and released only when
+                            the project is successfully approved . </p>
+                    </div>
+
+                </div>
+
+                <div class="feat-card">
+
+                    <img src="Images/Chat bot-pana.png">
+
+                    <h3>Chatbot — Always Here to Help</h3>
+
+                    <div class="overlay">
+                        <p><b>Chatbot</b><br>
+                            Get instant guidance and support anytime — whether
+                            you need help finding the right projects,
+                            setting up your profile, or navigating the platform .</p>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="title-dots">
+                <div v-for="n in 64"></div>
+            </div>
+        </section>
+
+        <div class="cta">
+
+            <div>
+                <h2>Start your first project today</h2>
+                <p>Join thousands of students building real experience</p>
+            </div>
+
+            <button @click="go('Register.html')">
+                Get started <i class="fas fa-chevron-right"></i>
+            </button>
+
+        </div>
+
+        <footer>
+
+            <div class="footer-brand">
+                <div class="logo">S<span>killLink</span></div>
+                <p class="footer-desc">
+                    A student-focused freelance platform <br>
+                    for real projects and experience.
+                </p>
+
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4>Quick links</h4>
+                <ul>
+                    <li>Home</li>
+                    <li>Explore Categories</li>
+                    <li>How It Works</li>
+                    <li>Key Features</li>
+                    <li>Chatbot</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>Categories</h4>
+                <ul>
+                    <li>Programming & Technology</li>
+                    <li>Design & Creative</li>
+                    <li>Writing & Translation</li>
+                    <li>Marketing & Sales</li>
+                    <li>Support & Administration</li>
+                </ul>
+            </div>
+
+            <div>
+                <ul>
+                    <br>
+                    <li>Audio & video</li>
+                    <li>Business & Finance</li>
+                    <li>Education & Training</li>
+                    <li>Legal</li>
+                    <li.>Engineering & Architecture</li>
+                </ul>
+            </div>
+            <h5> © 2025 Student Freelance Platform — Made for Students </h5>
+        </footer>
+
+    </div>
+
+    <script>
+
+        const { createApp } = Vue;
+
+        createApp({
+
+            data() {
+                return {
+                    activeTab: 'students'
+
+                }
+            },
+
+            computed: {
+
+                displayedSteps() {
+
+                    if (this.activeTab === 'students') {
+                        return [
+                            { icon: 'fas fa-user-circle', text: 'Create your profile' },
+                            { icon: 'fas fa-bullseye', text: 'Get matched with projects' },
+                            { icon: 'fas fa-handshake', text: 'Secure Delivery & Payment' }
+                        ]
+                    }
+
+                    else {
+
+                        return [
+                            { icon: 'fas fa-file-signature', text: 'Describe Your Needs' },
+                            { icon: 'fas fa-users', text: 'Compare Best Talent' },
+                            { icon: 'fas fa-lock', text: 'Hire Securely' }
+                        ]
+
+                    }
+
+                }
+
+            },
+
+            methods: {
+
+                go(path) {
+                    window.location.href = path
+                },
+                joinAsClient() {
+                    window.location.href = 'Register.html?role=client';
+                }
+
+            }
+
+        }).mount('#app')
+
+    </script>
+
+</body>
+
+</html>

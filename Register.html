@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - SkillLink</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        /* خناقة العينين.. بنخفي عين المتصفح ونخلي عينا إحنا بس */
+          input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+        }
+
+        input::-webkit-contacts-auto-fill-button,
+        input::-webkit-credentials-auto-fill-button {
+            display: none !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+          
+        }
+
+        .logo-top {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #0C9892; 
+            font-family: 'Dancing Script', cursive;
+           
+        }
+
+        .logo-top span {
+             color: #000;
+            
+        }
+
+        .main-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 160%;
+            max-width: 450px;
+        }
+
+        .character {
+            position: absolute;
+            z-index: 1;
+            width: 320px;
+            pointer-events: none;
+        }
+
+        .char-left {
+            left: -91px;
+            bottom: 50px;
+            z-index: 11;
+        }
+
+        .char-right {
+            right: -91px;
+            top: 60px;
+            z-index: 11;
+        }
+
+        .register-card {
+            position: relative;
+            z-index: 2;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            width: 130%;
+            text-align: center;
+            border: 1px solid #0e0d0d;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #00897b;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .field-container {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    padding: 10px 20px;
+    transition: 0.3s;
+}
+
+.input-group:focus-within {
+    border-color: #009688;
+    box-shadow: 0 0 6px rgba(0, 150, 136, 0.3);
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 5px;
+    font-size: 15px;
+    background: transparent;
+}
+        .role-selection {
+            display: flex;
+            justify-content: center;
+            gap: 150px;
+            margin: 25px 0;
+        }
+
+        .role-selection label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .role-selection input[type="radio"] {
+            accent-color: #009688;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+
+        .button {
+            background-color: #009688;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 150, 136, 0.2);
+        }
+
+        .button:hover {
+            background-color: #00796b;
+            transform: translateY(-2px);
+        }
+
+       .divider {
+            height: 1px;
+            background: #1a1919;
+            margin: 25px 0;
+        }
+
+        .Login-link {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .Login-link a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .Login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .toggle-password {
+            cursor: pointer;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="logo-top">S<span>killLink</span></div>
+
+        <div class="main-container">
+            <img src="Images/Hidden person-cuate (3).png" class="character char-left">
+            <img src="Images/Hidden person-cuate (2).png" class="character char-right">
+
+            <div class="register-card">
+                <h1>Get started</h1>
+
+                <form @submit.prevent="handleRegister">
+                    <div class="field-container">
+                        <div class="input-group">
+                            <input type="text" v-model="username" placeholder="UserName" required>
+                        </div>
+                    </div>
+
+                    <div class="field-container">
+                        <div class="input-group">
+                            <input type="email" v-model="email" placeholder="Email" required>
+                        </div>
+                    </div>
+
+                    <div class="field-container">
+                        <div class="input-group">
+                            <input :type="isVisible ? 'text' : 'password'" v-model="password" placeholder="Password"
+                                required>
+                            <i :class="['fas', isVisible ? 'fa-eye' : 'fa-eye-slash', 'toggle-password']"
+                                @click="isVisible = !isVisible"></i>
+                        </div>
+                    </div>
+
+                    <div class="role-selection">
+                        <label><input type="radio" v-model="role" value="user"> Student</label>
+                        <label><input type="radio" v-model="role" value="client"> Client</label>
+                    </div>
+
+                    <button type="submit" class="button" >Join now</button>
+                   
+                    <div class="divider"></div>
+
+                    <div class="Login-link">
+                        Already have an account? <a href="Login.html">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            return {
+                username: '',
+                email: '',
+                password: '',
+                role: 'client', 
+                isVisible: false,
+                loading: false,
+                error: ''
+            }
+        },
+        methods: {
+            async handleRegister() {
+                this.error = "";
+                this.loading = true;
+
+                try {
+                    const apiUrl = "https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/register";
+                    
+                    const payload = {
+                        username: this.username.trim().replace(/\s+/g, '_').toLowerCase(),
+                        email: this.email.trim(),
+                        password: this.password,
+                        type: this.role 
+                    };
+
+                    const response = await axios.post(apiUrl, payload);
+
+                    // طباعة الرد في الكونسول عشان لو حصلت مشكلة نلمحها فوراً
+                    console.log("Full Server Response:", response.data);
+if (response.data.success) {
+    // Auto login after successful register
+    const loginRes = await axios.post(
+        "https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/login",
+        {
+           email: this.email.trim(),
+    password: this.password,
+    type: this.role
+        }
+    );
+
+    console.log("Auto Login Response:", loginRes.data);
+
+    const token = loginRes.data.token || loginRes.data.accessToken || loginRes.data.data?.token;
+
+    if (!token) {
+        alert("Login succeeded but token missing.");
+        return;
+    }
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user_role", this.role);
+    localStorage.setItem("user_name", this.username);
+    localStorage.setItem("user_email", this.email);
+
+    window.location.href = "Onboarding.html";
+
+} else {
+                        alert(response.data.message || "Registration failed.");
+                    }
+
+                } catch (err) {
+                    console.error("Server Error Details:", err.response?.data);
+                    const msg = err.response?.data?.message || "Registration failed.";
+                    alert("❌ " + msg);
+                } finally {
+                    this.loading = false;
+                }
+            }
+        }
+    }).mount("#app");
+</script>
+</body>
+</html>

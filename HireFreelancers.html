@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hire Students - SkillLink</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        :root {
+            --primary: #12a39c;
+            --dark: #1d1d1f;
+            --gray: #6b7280;
+            --light-bg: #f9fafb;
+            --border: #eeeeee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: var(--dark);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .logo span {
+            color: var(--dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: #fff;
+            padding: 50px 8%;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 25px 15px 50px;
+            border-radius: 40px;
+            border: 1px solid #ddd;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 20px;
+            top: 18px;
+            color: var(--gray);
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(18, 163, 156, 0.1);
+        }
+
+        /* Freelancers Grid */
+        .container {
+            padding: 40px 8%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .freelancer-card {
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 30px 20px;
+            text-align: center;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .freelancer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary);
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #f0fdfc;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #22c55e;
+            border-radius: 50%;
+            position: absolute;
+            top: 85px;
+            right: 40%;
+            border: 2px solid #fff;
+        }
+
+        .freelancer-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .freelancer-card .major {
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .skill-tag {
+            font-size: 11px;
+            background: #f3f4f6;
+            padding: 4px 10px;
+            border-radius: 10px;
+            color: #4b5563;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #f9fafb;
+            padding-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box span {
+            display: block;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .stat-box b {
+            font-size: 14px;
+        }
+
+        .hire-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hire-btn:hover {
+            background: #0e8c86;
+            letter-spacing: 1px;
+        }
+
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-btns button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .modal-btns .signup {
+            background: var(--primary);
+            color: white;
+        }
+
+        .modal-btns .login {
+            background: #eee;
+            color: var(--dark);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" v-cloak>
+        <div v-if="showAuthModal" class="modal-overlay" @click.self="showAuthModal = false">
+            <div class="modal-card">
+                <i class="fas fa-lock" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
+                <h2>Join SkillLink</h2>
+                <p style="color: gray; font-size: 14px; margin-top: 10px;">You need to have an account to view student
+                    profiles and hire them.</p>
+                <div class="modal-btns">
+                    <button class="signup" @click="go('Register.html')">Create Account</button>
+                    <button class="login" @click="go('login.html')">Login</button>
+                    <p @click="showAuthModal = false"
+                        style="cursor:pointer; margin-top:15px; font-size:12px; color:gray; text-decoration: underline;">
+                        Maybe later</p>
+                </div>
+            </div>
+        </div>
+
+        <header>
+            <div class="logo" @click="go('index.html')">S<span>killLink</span></div>
+            <button class="hire-btn" style="width: auto; padding: 8px 20px;" @click="checkAuth('PostJob.html')">Post a
+                Project</button>
+        </header>
+
+        <section class="hero">
+            <h1>Hire Top <span>Student</span> Talent</h1>
+            <p>Connect with brilliant students ready to help you build your next big idea.</p>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" v-model="searchQuery"
+                    placeholder="Search by skill (e.g. Graphic Design, Python, Writing)">
+            </div>
+        </section>
+
+        <main class="container">
+            <div class="freelancer-card" v-for="student in filteredStudents" :key="student.id">
+                <div class="status-dot" v-if="student.available"></div>
+                <img :src="student.image" class="profile-img" alt="Student">
+                <h3>{{ student.name }}</h3>
+                <span class="major">{{ student.title }}</span>
+
+                <div class="skills-wrap">
+                    <span class="skill-tag" v-for="skill in student.skills">{{ skill }}</span>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-box">
+                        <span>Rating</span>
+                        <b><i class="fas fa-star" style="color: #fbbf24;"></i> {{ student.rating }}</b>
+                    </div>
+                    <div class="stat-box">
+                        <span>Projects</span>
+                        <b>{{ student.projects }}+</b>
+                    </div>
+                </div>
+
+                <button class="hire-btn" @click="contactStudent(student.name)">View Profile</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    searchQuery: '',
+                    showAuthModal: false,
+                    isLoggedIn: false,
+                    students: [
+                        { id: 1, name: 'Ahmed Ali', title: 'UI/UX Designer', image: 'Images/images.jfif', skills: ['Figma', 'Adobe XD', 'Branding'], rating: 4.9, projects: 12, available: true },
+                        { id: 2, name: 'Sara Kamel', title: 'Content Writer', image: 'Images/png-clipart-graphy-portrait-girl-photography-fashion.png', skills: ['Copywriting', 'SEO', 'Arabic'], rating: 4.8, projects: 25, available: true },
+                        { id: 3, name: 'Omar Khaled', title: 'Full-stack Developer', image: 'Images/pngtree-businessman-and-mobile-phone-png-image_10159319.png', skills: ['Vue.js', 'Node.js', 'Python'], rating: 5.0, projects: 8, available: true },
+                        { id: 4, name: 'Ali Hassan', title: 'Social Media Manager', image: 'Images/1686678501554.jfif', skills: ['Marketing', 'Ads', 'Canva'], rating: 4.7, projects: 15, available: false },
+                        { id: 5, name: 'Youssef John', title: 'Data Analyst', image: 'Images/handsome-young-cheerful-man-with-arms-crossed_171337-1073.avif', skills: ['Excel', 'SQL', 'Tableau'], rating: 4.9, projects: 10, available: true },
+                        { id: 6, name: 'Khaled Said', title: 'Video Editor', image: 'Images/photo-1557862921-37829c790f19.avif', skills: ['Premiere', 'After Effects'], rating: 4.6, projects: 18, available: true },
+                    ]
+                }
+            },
+            computed: {
+                filteredStudents() {
+                    return this.students.filter(s => {
+                        const query = this.searchQuery.toLowerCase();
+                        return s.name.toLowerCase().includes(query) ||
+                            s.title.toLowerCase().includes(query) ||
+                            s.skills.some(skill => skill.toLowerCase().includes(query));
+                    });
+                }
+            },
+            methods: {
+                go(path) { window.location.href = path; },
+
+
+                checkAuth(path) {
+                    if (!this.isLoggedIn) {
+                        this.showAuthModal = true;
+                    } else {
+                        this.go(path);
+                    }
+                },
+
+                contactStudent(name) {
+                    if (!this.isLoggedIn) {
+                        this.showAuthModal = true;
+                    } else {
+                        alert("Opening profile of " + name);
+
+                    }
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

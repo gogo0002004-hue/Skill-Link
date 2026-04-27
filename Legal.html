@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillLink - Legal Services</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <style>
+        :root {
+            --primary: #12a39c;
+            --accent: #f39c12;
+            --dark: #1d1d1f;
+            --gray: #6b7280;
+            --border: #eeeeee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #fefefe;
+            color: var(--dark);
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 8%;
+            border-bottom: 1px solid var(--border);
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .logo span {
+            color: #111;
+        }
+
+        /* HERO SECTION */
+        .page-header {
+            background: linear-gradient(135deg, #12a39c 0%, #0e7e78 100%);
+            color: white;
+            padding: 80px 8%;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        /* CONTENT SECTION */
+        .container {
+            padding: 60px 8%;
+        }
+
+        .description {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .description-text {
+            flex: 1;
+        }
+
+        .description-text h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .description-text p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .description-img img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* BUTTON */
+        .btn-main {
+            padding: 8px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-main:hover {
+            background: var(--dark);
+        }
+
+        /* SERVICES TAGS */
+        .services-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--gray);
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .description {
+                flex-direction: column-reverse;
+                text-align: center;
+            }
+
+            .services-tags {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">S<span>killLink</span></div>
+            <button class="btn-main" @click="go('home.html')">Back Home</button>
+        </header>
+
+        <section class="page-header">
+            <h1>Legal Services</h1>
+            <p>Reliable legal research and documentation support from top law students.</p>
+        </section>
+
+        <section class="container">
+            <div class="description">
+                <div class="description-text">
+                    <h2>Navigate legalities with ease</h2>
+                    <p>
+                        Our platform connects you with dedicated law students who can assist with the foundational
+                        aspects of legal work. From in-depth legal research to drafting basic agreements, get the
+                        support you need at an accessible rate.
+                    </p>
+                    <p>
+                        <b>Legal Support Services:</b>
+                    </p>
+                    <div class="services-tags">
+                        <span class="tag">Legal Research</span>
+                        <span class="tag">Contract Drafting</span>
+                        <span class="tag">Document Review</span>
+                        <span class="tag">Terms & Conditions</span>
+                        <span class="tag">Policy Writing</span>
+                        <span class="tag">Regulatory Analysis</span>
+                    </div>
+                    <p style="margin-top: 20px;">
+                        Hiring law students provides you with fresh academic insights and meticulous attention to
+                        detail, helping you stay organized and prepared for any legal requirements.
+                    </p>
+                </div>
+                <div class="description-img">
+                    <img src="Images/1_ZeFoapIuwd96E4V3mWhWIw.jpg" alt="Legal illustration">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            methods: {
+                go(path) {
+                    window.location.href = path;
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

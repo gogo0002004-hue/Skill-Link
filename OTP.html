@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+        }
+
+             .logo-top {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #0C9892; 
+            font-family: 'Dancing Script', cursive;
+           
+        }
+
+        .logo-top span {
+             color: #000;
+            
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 25px;
+            width: 450px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid #070707;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #00897b;
+        }
+
+        .instruction-text {
+            color: #555555;
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .field-container {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            border: 1px solid #534c4c;
+            border-radius: 30px;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group:focus-within {
+            border-color: #009688;
+            box-shadow: 0 0 8px rgba(0, 150, 136, 0.2);
+        }
+
+        .input-group input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex-grow: 1;
+            padding: 0;
+            font-size: 24px;
+            color: #333333;
+            text-align: center;
+            letter-spacing: 12px;
+          
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            background: #009688;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            padding: 14px 10px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.2);
+        }
+
+        .button:hover {
+            background: #00796b;
+            transform: translateY(-2px);
+        }
+
+        .resend-link {
+            color: #555555;
+            margin-top: 25px;
+            font-size: 15px;
+        }
+
+        .resend-link a {
+            color: #009688;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .resend-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="logo-top">S<span>killLink</span></div>
+
+        <form @submit.prevent="handleOtpSubmit">
+            <h1>Verify Code</h1>
+            <p class="instruction-text">
+                Enter the 6-digit code sent to your email or phone number to verify your account.
+            </p>
+
+            <div class="field-container">
+                <div class="input-group">
+                    <input type="tel" v-model="otp" placeholder="••••••" maxlength="6" required>
+                </div>
+            </div>
+
+            <button type="submit" class="button">Confirm Code</button>
+
+            <div class="resend-link">
+                <p>Didn't receive the code? <a href="#" @click.prevent="resendOtp">Resend Code</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+const { createApp } = Vue;
+
+createApp({
+    data() {
+        return {
+            otp: '',
+            loading: false,
+            email: sessionStorage.getItem("userEmail") 
+        }
+    },
+    methods: {
+        async handleOtpSubmit() {
+            const otpClean = this.otp.trim();
+
+            if (otpClean.length !== 6 || !/^\d+$/.test(otpClean)) {
+                alert("❌ The code must be exactly 6 digits.");
+                return;
+            }
+            sessionStorage.setItem("resetCode", otpClean);
+            
+            window.location.href = "CreatNewPassword.html";
+        },
+
+        async resendOtp() {
+            if (!this.email) {
+                alert("⚠️ Email session expired. Please go back to forgot password page.");
+                return;
+            }
+
+            this.loading = true;
+            try {
+                await axios.post("https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/forget-password", {
+                    email: this.email
+                });
+                alert('📬 A new code has been sent to ' + this.email);
+            } catch (err) {
+                alert("❌ Failed to resend code. Please try again later.");
+                console.error(err);
+            } finally {
+                this.loading = false;
+            }
+        }
+    }
+}).mount('#app');
+    
+    </script>
+</body>
+
+</html>
