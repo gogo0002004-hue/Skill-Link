@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkillLink - Professional Sign Up</title>
-   
+
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <style>
@@ -21,7 +21,7 @@
 
         body {
             background-color: var(--bg);
-          
+
             margin: 0;
             display: flex;
             justify-content: center;
@@ -444,10 +444,10 @@
                         href="#" style="color: #149b91;">Privacy Policy</a>
                 </p>
                 <div style="display: flex; gap: 15px; margin-top: 30px;">
-                    <button @click="handleVerification " class="btn-continue"
-                        style="float:none; flex:1;">Verify by Text</button>
-                    <button @click="handleVerification " class="btn-continue"
-                        style="float:none; flex:1;">Verify by Call</button>
+                    <button @click="handleVerification " class="btn-continue" style="float:none; flex:1;">Verify by
+                        Text</button>
+                    <button @click="handleVerification " class="btn-continue" style="float:none; flex:1;">Verify by
+                        Call</button>
                 </div>
             </div>
 
@@ -485,215 +485,203 @@
         </div>
     </div>
 
-<script>
-const { createApp, ref, nextTick } = Vue;
+    <script>
+        const { createApp, ref, nextTick } = Vue;
 
-createApp({
-    setup() {
+        createApp({
+            setup() {
 
-        const currentStep = ref(1);
-        const showModal = ref(false);
-        const showSuccess = ref(false);
-        const verificationCode = ref('');
-        const imageUrl = ref(null);
-        const tempLang = ref('');
-        const tempSkill = ref('');
+                const currentStep = ref(1);
+                const showModal = ref(false);
+                const showSuccess = ref(false);
+                const verificationCode = ref('');
+                const imageUrl = ref(null);
+                const tempLang = ref('');
+                const tempSkill = ref('');
 
-        // Inputs refs
-        const fNameInput = ref(null);
-        const lNameInput = ref(null);
-        const addressInput = ref(null);
-        const dateInput = ref(null);
-        const langInput = ref(null);
-        const bioInput = ref(null);
-        const CategoryInput = ref(null);
-        const SkillsInput = ref(null);
-        const UniversityInput = ref(null);
-        const CollegeInput = ref(null);
-        const YearsInput = ref(null);
-        const LinkedinInput = ref(null);
-        const GitHubInput = ref(null);
-        const BehanceInput = ref(null);
-        const phoneInput = ref(null);
-        const codeInput = ref(null);
+              
+                const fNameInput = ref(null);
+                const lNameInput = ref(null);
+                const addressInput = ref(null);
+                const dateInput = ref(null);
+                const langInput = ref(null);
+                const bioInput = ref(null);
+                const CategoryInput = ref(null);
+                const SkillsInput = ref(null);
+                const UniversityInput = ref(null);
+                const CollegeInput = ref(null);
+                const YearsInput = ref(null);
+                const LinkedinInput = ref(null);
+                const GitHubInput = ref(null);
+                const BehanceInput = ref(null);
+                const phoneInput = ref(null);
+                const codeInput = ref(null);
 
-        const form = ref({
-            fName: '',
-            lName: '',
-            address: '',
-            dob: '',
-            personalBio: '',
-            category: '',
-            uni: '',
-            college: '',
-            years: '',
-            linkedin: '',
-            github: '',
-            behance: '',
-            country: '',
-            phone: ''
-        });
+                const form = ref({
+                    fName: '',
+                    lName: '',
+                    address: '',
+                    dob: '',
+                    personalBio: '',
+                    category: '',
+                    uni: '',
+                    college: '',
+                    years: '',
+                    linkedin: '',
+                    github: '',
+                    behance: '',
+                    country: '',
+                    phone: ''
+                });
 
-        // =============================
-        // NEXT STEP VALIDATION
-        // =============================
-        const handleNextStep = async () => {
-            if (currentStep.value === 1) {
-                if (!form.value.fName || !form.value.lName || !form.value.address) {
-                    alert("Please fill all required personal information.");
-                    return;
-                }
-            }
-
-            if (currentStep.value === 2) {
-                if (!form.value.category || !form.value.uni) {
-                    alert("Please fill required professional info.");
-                    return;
-                }
-            }
-
-            if (currentStep.value < 3) {
-                currentStep.value++;
-                await nextTick();
-
-                if (currentStep.value === 2) CategoryInput.value?.focus();
-                else if (currentStep.value === 3) phoneInput.value?.focus();
-            }
-        };
-
-        // =============================
-        // IMAGE UPLOAD
-        // =============================
-        const handleFileUpload = (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                imageUrl.value = URL.createObjectURL(file);
-            }
-        };
-
-        // =============================
-        // PHONE VERIFICATION
-        // =============================
-        const handleVerification = () => {
-            if (!form.value.phone || form.value.phone.length < 11) {
-                alert("Enter valid phone number");
-                return;
-            }
-
-            showModal.value = true;
-            nextTick(() => codeInput.value?.focus());
-        };
-
-        const completeSignUp = () => {
-            if (verificationCode.value.length === 6) {
-                showModal.value = false;
-                showSuccess.value = true;
-            } else {
-                alert("Enter valid 6-digit code");
-            }
-        };
-
-        // =============================
-        // API CALL (IMPORTANT PART)
-        // =============================
-        const closeAllAndFinish = async () => {
-
-            const token = localStorage.getItem("token");
-            console.log("TOKEN:", token);
-
-            if (!token) {
-                alert("User not logged in!");
-                return;
-            }
-
-            const profileData = {
-              first_name: form.value.fName,
-                last_name: form.value.lName,
-                address: form.value.address,
-                brief: form.value.personalBio,
-                university: form.value.uni,
-                college: form.value.college,
-                study_years: form.value.years,
-                phoneNumber: form.value.phoneNumber,
-                speciality: form.value.category,
-                social_links: {
-                   linkedin_url: form.value.linkedin,
-                    github_url: form.value.github,
-                    behance_url: form.value.behance
-                }
-            };
-
-            try {
-
-                const response = await axios.put(
-                    "https://corsproxy.io/?https://skilllinkapi.ddns.net/user/profile",
-                    profileData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-Type': 'application/json'
+                const handleNextStep = async () => {
+                    if (currentStep.value === 1) {
+                        if (!form.value.fName || !form.value.lName || !form.value.address) {
+                            alert("Please fill all required personal information.");
+                            return;
                         }
                     }
-                );
 
-                console.log("SUCCESS:", response.data);
+                    if (currentStep.value === 2) {
+                        if (!form.value.category || !form.value.uni) {
+                            alert("Please fill required professional info.");
+                            return;
+                        }
+                    }
 
-                showSuccess.value = true;
+                    if (currentStep.value < 3) {
+                        currentStep.value++;
+                        await nextTick();
 
-                setTimeout(() => {
-                    window.location.href = " http://localhost:5173/";
-                }, 1500);
+                        if (currentStep.value === 2) CategoryInput.value?.focus();
+                        else if (currentStep.value === 3) phoneInput.value?.focus();
+                    }
+                };
 
-            } catch (error) {
+                const handleFileUpload = (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        imageUrl.value = URL.createObjectURL(file);
+                    }
+                };
 
-                console.error("ERROR:", error);
+                const handleVerification = () => {
+                    if (!form.value.phone || form.value.phone.length < 11) {
+                        alert("Enter valid phone number");
+                        return;
+                    }
 
-                if (error.response) {
-                    alert(error.response.data.message || "Server error");
-                } else {
-                    alert("Network error or CORS issue");
-                }
+                    showModal.value = true;
+                    nextTick(() => codeInput.value?.focus());
+                };
+
+                const completeSignUp = () => {
+                    if (verificationCode.value.length === 6) {
+                        showModal.value = false;
+                        showSuccess.value = true;
+                    } else {
+                        alert("Enter valid 6-digit code");
+                    }
+                };
+
+                const closeAllAndFinish = async () => {
+
+                    const token = localStorage.getItem("token");
+                    console.log("TOKEN:", token);
+
+                    if (!token) {
+                        alert("User not logged in!");
+                        return;
+                    }
+
+                    const profileData = {
+                        first_name: form.value.fName,
+                        last_name: form.value.lName,
+                        address: form.value.address,
+                        brief: form.value.personalBio,
+                        university: form.value.uni,
+                        college: form.value.college,
+                        study_years: form.value.years,
+                        phoneNumber: form.value.phoneNumber,
+                        speciality: form.value.category,
+                        social_links: {
+                            linkedin_url: form.value.linkedin,
+                            github_url: form.value.github,
+                            behance_url: form.value.behance
+                        }
+                    };
+
+                    try {
+
+                        const response = await axios.put(
+                            "https://corsproxy.io/?https://skilllinkapi.ddns.net/user/profile",
+                            profileData,
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            }
+                        );
+
+                        console.log("SUCCESS:", response.data);
+
+                        showSuccess.value = true;
+
+                        setTimeout(() => {
+                            window.location.href = " http://localhost:5173/";
+                        }, 1500);
+
+                    } catch (error) {
+
+                        console.error("ERROR:", error);
+
+                        if (error.response) {
+                            alert(error.response.data.message || "Server error");
+                        } else {
+                            alert("Network error or CORS issue");
+                        }
+                    }
+                };
+
+                return {
+                    currentStep,
+                    form,
+                    imageUrl,
+                    tempLang,
+                    tempSkill,
+                    showModal,
+                    showSuccess,
+                    verificationCode,
+
+                    fNameInput,
+                    lNameInput,
+                    addressInput,
+                    dateInput,
+                    langInput,
+                    bioInput,
+                    CategoryInput,
+                    SkillsInput,
+                    UniversityInput,
+                    CollegeInput,
+                    YearsInput,
+                    LinkedinInput,
+                    GitHubInput,
+                    BehanceInput,
+                    phoneInput,
+                    codeInput,
+
+                    handleNextStep,
+                    handleFileUpload,
+                    handleVerification,
+                    completeSignUp,
+                    closeAllAndFinish,
+
+                    getStepLabel: (n) => ["Personal Info", "Professional Info", "Security"][n - 1]
+                };
             }
-        };
-
-        return {
-            currentStep,
-            form,
-            imageUrl,
-            tempLang,
-            tempSkill,
-            showModal,
-            showSuccess,
-            verificationCode,
-
-            fNameInput,
-            lNameInput,
-            addressInput,
-            dateInput,
-            langInput,
-            bioInput,
-            CategoryInput,
-            SkillsInput,
-            UniversityInput,
-            CollegeInput,
-            YearsInput,
-            LinkedinInput,
-            GitHubInput,
-            BehanceInput,
-            phoneInput,
-            codeInput,
-
-            handleNextStep,
-            handleFileUpload,
-            handleVerification,
-            completeSignUp,
-            closeAllAndFinish,
-
-            getStepLabel: (n) => ["Personal Info", "Professional Info", "Security"][n - 1]
-        };
-    }
-}).mount('#app');
-</script>
+        }).mount('#app');
+    </script>
 </body>
 
 </html>

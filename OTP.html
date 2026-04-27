@@ -22,20 +22,20 @@
             background-color: #f0f2f5;
         }
 
-             .logo-top {
+        .logo-top {
             position: absolute;
             top: 30px;
             left: 50px;
             font-size: 26px;
             font-weight: 800;
-            color: #0C9892; 
+            color: #0C9892;
             font-family: 'Dancing Script', cursive;
-           
+
         }
 
         .logo-top span {
-             color: #000;
-            
+            color: #000;
+
         }
 
         form {
@@ -92,7 +92,7 @@
             color: #333333;
             text-align: center;
             letter-spacing: 12px;
-          
+
         }
 
         .button {
@@ -158,51 +158,51 @@
     </div>
 
     <script>
-const { createApp } = Vue;
+        const { createApp } = Vue;
 
-createApp({
-    data() {
-        return {
-            otp: '',
-            loading: false,
-            email: sessionStorage.getItem("userEmail") 
-        }
-    },
-    methods: {
-        async handleOtpSubmit() {
-            const otpClean = this.otp.trim();
+        createApp({
+            data() {
+                return {
+                    otp: '',
+                    loading: false,
+                    email: sessionStorage.getItem("userEmail")
+                }
+            },
+            methods: {
+                async handleOtpSubmit() {
+                    const otpClean = this.otp.trim();
 
-            if (otpClean.length !== 6 || !/^\d+$/.test(otpClean)) {
-                alert("❌ The code must be exactly 6 digits.");
-                return;
+                    if (otpClean.length !== 6 || !/^\d+$/.test(otpClean)) {
+                        alert("❌ The code must be exactly 6 digits.");
+                        return;
+                    }
+                    sessionStorage.setItem("resetCode", otpClean);
+
+                    window.location.href = "CreatNewPassword.html";
+                },
+
+                async resendOtp() {
+                    if (!this.email) {
+                        alert("⚠️ Email session expired. Please go back to forgot password page.");
+                        return;
+                    }
+
+                    this.loading = true;
+                    try {
+                        await axios.post("https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/forget-password", {
+                            email: this.email
+                        });
+                        alert('📬 A new code has been sent to ' + this.email);
+                    } catch (err) {
+                        alert("❌ Failed to resend code. Please try again later.");
+                        console.error(err);
+                    } finally {
+                        this.loading = false;
+                    }
+                }
             }
-            sessionStorage.setItem("resetCode", otpClean);
-            
-            window.location.href = "CreatNewPassword.html";
-        },
+        }).mount('#app');
 
-        async resendOtp() {
-            if (!this.email) {
-                alert("⚠️ Email session expired. Please go back to forgot password page.");
-                return;
-            }
-
-            this.loading = true;
-            try {
-                await axios.post("https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/forget-password", {
-                    email: this.email
-                });
-                alert('📬 A new code has been sent to ' + this.email);
-            } catch (err) {
-                alert("❌ Failed to resend code. Please try again later.");
-                console.error(err);
-            } finally {
-                this.loading = false;
-            }
-        }
-    }
-}).mount('#app');
-    
     </script>
 </body>
 

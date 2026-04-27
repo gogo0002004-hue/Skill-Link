@@ -10,8 +10,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        /* خناقة العينين.. بنخفي عين المتصفح ونخلي عينا إحنا بس */
-          input::-ms-reveal,
+        input::-ms-reveal,
         input::-ms-clear {
             display: none !important;
         }
@@ -31,7 +30,7 @@
             min-height: 100vh;
             background-color: #f8f9fa;
             overflow-x: hidden;
-          
+
         }
 
         .logo-top {
@@ -40,14 +39,14 @@
             left: 50px;
             font-size: 26px;
             font-weight: 800;
-            color: #0C9892; 
+            color: #0C9892;
             font-family: 'Dancing Script', cursive;
-           
+
         }
 
         .logo-top span {
-             color: #000;
-            
+            color: #000;
+
         }
 
         .main-container {
@@ -103,28 +102,29 @@
         }
 
         .input-group {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 30px;
-    padding: 10px 20px;
-    transition: 0.3s;
-}
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            padding: 10px 20px;
+            transition: 0.3s;
+        }
 
-.input-group:focus-within {
-    border-color: #009688;
-    box-shadow: 0 0 6px rgba(0, 150, 136, 0.3);
-}
+        .input-group:focus-within {
+            border-color: #009688;
+            box-shadow: 0 0 6px rgba(0, 150, 136, 0.3);
+        }
 
-.input-group input {
-    border: none;
-    outline: none;
-    flex-grow: 1;
-    padding: 5px;
-    font-size: 15px;
-    background: transparent;
-}
+        .input-group input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            padding: 5px;
+            font-size: 15px;
+            background: transparent;
+        }
+
         .role-selection {
             display: flex;
             justify-content: center;
@@ -166,7 +166,7 @@
             transform: translateY(-2px);
         }
 
-       .divider {
+        .divider {
             height: 1px;
             background: #1a1919;
             margin: 25px 0;
@@ -233,8 +233,8 @@
                         <label><input type="radio" v-model="role" value="client"> Client</label>
                     </div>
 
-                    <button type="submit" class="button" >Join now</button>
-                   
+                    <button type="submit" class="button">Join now</button>
+
                     <div class="divider"></div>
 
                     <div class="Login-link">
@@ -244,81 +244,80 @@
             </div>
         </div>
     </div>
-<script>
-    const { createApp } = Vue;
+    <script>
+        const { createApp } = Vue;
 
-    createApp({
-        data() {
-            return {
-                username: '',
-                email: '',
-                password: '',
-                role: 'client', 
-                isVisible: false,
-                loading: false,
-                error: ''
-            }
-        },
-        methods: {
-            async handleRegister() {
-                this.error = "";
-                this.loading = true;
+        createApp({
+            data() {
+                return {
+                    username: '',
+                    email: '',
+                    password: '',
+                    role: 'client',
+                    isVisible: false,
+                    loading: false,
+                    error: ''
+                }
+            },
+            methods: {
+                async handleRegister() {
+                    this.error = "";
+                    this.loading = true;
 
-                try {
-                    const apiUrl = "https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/register";
-                    
-                    const payload = {
-                        username: this.username.trim().replace(/\s+/g, '_').toLowerCase(),
-                        email: this.email.trim(),
-                        password: this.password,
-                        type: this.role 
-                    };
+                    try {
+                        const apiUrl = "https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/register";
 
-                    const response = await axios.post(apiUrl, payload);
+                        const payload = {
+                            username: this.username.trim().replace(/\s+/g, '_').toLowerCase(),
+                            email: this.email.trim(),
+                            password: this.password,
+                            type: this.role
+                        };
 
-                    // طباعة الرد في الكونسول عشان لو حصلت مشكلة نلمحها فوراً
-                    console.log("Full Server Response:", response.data);
-if (response.data.success) {
-    // Auto login after successful register
-    const loginRes = await axios.post(
-        "https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/login",
-        {
-           email: this.email.trim(),
-    password: this.password,
-    type: this.role
-        }
-    );
+                        const response = await axios.post(apiUrl, payload);
 
-    console.log("Auto Login Response:", loginRes.data);
+                        console.log("Full Server Response:", response.data);
+                        if (response.data.success) {
+                            const loginRes = await axios.post(
+                                "https://corsproxy.io/?https://skilllinkapi.ddns.net/auth/login",
+                                {
+                                    email: this.email.trim(),
+                                    password: this.password,
+                                    type: this.role
+                                }
+                            );
 
-    const token = loginRes.data.token || loginRes.data.accessToken || loginRes.data.data?.token;
+                            console.log("Auto Login Response:", loginRes.data);
 
-    if (!token) {
-        alert("Login succeeded but token missing.");
-        return;
-    }
+                            const token = loginRes.data.token || loginRes.data.accessToken || loginRes.data.data?.token;
 
-    localStorage.setItem("token", token);
-    localStorage.setItem("user_role", this.role);
-    localStorage.setItem("user_name", this.username);
-    localStorage.setItem("user_email", this.email);
+                            if (!token) {
+                                alert("Login succeeded but token missing.");
+                                return;
+                            }
 
-    window.location.href = "Onboarding.html";
+                            localStorage.setItem("token", token);
+                            localStorage.setItem("user_role", this.role);
+                            localStorage.setItem("user_name", this.username);
+                            localStorage.setItem("user_email", this.email);
 
-} else {
-                        alert(response.data.message || "Registration failed.");
+                            window.location.href = "Onboarding.html";
+
+                        } else {
+                            alert(response.data.message || "Registration failed.");
+                        }
+
+                    } catch (err) {
+                        console.error("Server Error Details:", err.response?.data);
+                        const msg = err.response?.data?.message || "Registration failed.";
+                        alert("❌ " + msg);
+                    } finally {
+                        this.loading = false;
                     }
-
-                } catch (err) {
-                    console.error("Server Error Details:", err.response?.data);
-                    const msg = err.response?.data?.message || "Registration failed.";
-                    alert("❌ " + msg);
-                } finally {
-                    this.loading = false;
                 }
             }
-        }
-    }).mount("#app");
-</script>
+        }).mount("#app");
+    </script>
 </body>
+
 </html>

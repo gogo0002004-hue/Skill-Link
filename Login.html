@@ -248,7 +248,6 @@
         let response;
         let userRole = "";
 
-        // Try Student first
         try {
             response = await axios.post(loginUrl, {
                 email: this.email.trim(),
@@ -257,7 +256,6 @@
             });
             userRole = "user";
         } catch {
-            // If Student fails, try Client
             response = await axios.post(loginUrl, {
                 email: this.email.trim(),
                 password: this.password,

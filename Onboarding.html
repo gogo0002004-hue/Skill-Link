@@ -1,50 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkillLink - Welcome</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
     <style>
         :root {
-            --primary: #12a39c; 
+            --primary: #12a39c;
             --text-dark: #1d1d1f;
             --border-color: #e2e8f0;
         }
 
         body {
-             margin: 0;
+            margin: 0;
             font-family: 'Poppins', sans-serif;
-            background-color: #f1f0f0; 
+            background-color: #f1f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-          .container {
+        .container {
             width: 100%;
             padding: 40px;
             display: flex;
             flex-direction: column;
         }
 
-       
+
         .header-logo {
             margin-bottom: 60px;
         }
-        .logo { 
-            font-size: 28px; 
-            font-weight: 800; 
-            color: var(--primary); 
-            text-decoration: none; 
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
             letter-spacing: -0.5px;
             font-family: 'Dancing Script', cursive;
         }
-        .logo span { color: #000; }
+
+        .logo span {
+            color: #000;
+        }
 
         .main-layout {
             display: flex;
@@ -53,35 +59,40 @@
             gap: 50px;
         }
 
-        .content-left { flex: 1.3; }
-
-       
-        .welcome-text h1 { 
-            font-size: 30px; 
-            margin: 0; 
-            color: var(--text-dark); 
-            font-weight: 700;
+        .content-left {
+            flex: 1.3;
         }
-        .welcome-text h2 { 
-            font-size: 28px; 
-            margin: 8px 0 45px 0; 
-            color: var(--text-dark); 
+
+
+        .welcome-text h1 {
+            font-size: 30px;
+            margin: 0;
+            color: var(--text-dark);
             font-weight: 700;
         }
 
-       
+        .welcome-text h2 {
+            font-size: 28px;
+            margin: 8px 0 45px 0;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+
         .step-item {
             display: flex;
             align-items: center;
             padding: 18px 0;
-            border-bottom: 1px  solid #3b3a3a; 
+            border-bottom: 1px solid #3b3a3a;
         }
-       .step-i{
+
+        .step-i {
             display: flex;
             align-items: center;
             padding: 18px 0;
-            
+
         }
+
         .step-item i {
             font-size: 22px;
             color: var(--primary);
@@ -89,21 +100,24 @@
             width: 35px;
             text-align: center;
         }
-        .step-i i{
- font-size: 22px;
+
+        .step-i i {
+            font-size: 22px;
             color: var(--primary);
             margin-right: 25px;
             width: 35px;
             text-align: center;
-            
+
         }
+
         .step-item span {
             font-size: 18px;
             color: #333;
             font-weight: 400;
         }
-        .step-i span{
-              font-size: 18px;
+
+        .step-i span {
+            font-size: 18px;
             color: #333;
             font-weight: 400;
         }
@@ -117,16 +131,17 @@
 
         .profile-card {
             background: #fff;
-            border: 1px solid #333; 
+            border: 1px solid #333;
             border-radius: 25px;
             padding: 35px 25px;
             width: 280px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         .profile-img {
-            width: 85px; height: 85px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 15px;
@@ -134,34 +149,49 @@
 
         }
 
-        .profile-card h3 { font-size: 19px; margin: 0; color: #333; font-weight: 600; }
-        .profile-card .job { font-size: 14px; color: #666; margin-bottom: 12px; display: block; }
-        
-        .profile-card .stats { 
-            font-size: 13px; 
-            color: #333; 
-            font-weight: 600; 
+        .profile-card h3 {
+            font-size: 19px;
+            margin: 0;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .profile-card .job {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .profile-card .stats {
+            font-size: 13px;
+            color: #333;
+            font-weight: 600;
             margin-bottom: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
         }
-        .profile-card .stats span { color: #f1c40f; }
 
-        .profile-card p { 
-            font-size: 12px; 
-            color: #555; 
-            line-height: 1.6; 
+        .profile-card .stats span {
+            color: #f1c40f;
+        }
+
+        .profile-card p {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.6;
             font-style: italic;
             margin: 0;
         }
+
         .next-btn {
             position: absolute;
             right: -22px;
             top: 50%;
             transform: translateY(-50%);
-            background-color: #7dded8eb; 
+            background-color: #7dded8eb;
 
             color: white;
             width: 45px;
@@ -173,7 +203,7 @@
             font-size: 20px;
             border: 4px solid #7dded8eb;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .footer-action {
@@ -181,6 +211,7 @@
             justify-content: flex-end;
             margin-top: 60px;
         }
+
         .btn-get-started {
             background-color: var(--primary);
             color: white;
@@ -193,34 +224,46 @@
             transition: 0.3s;
             box-shadow: 0 4px 15px rgba(18, 163, 156, 0.3);
         }
+
         .btn-get-started:hover {
             background-color: #0d8a84;
             transform: scale(1.02);
         }
 
         @media (max-width: 900px) {
-            .main-layout { flex-direction: column; align-items: center; }
-            .content-left { width: 100%; text-align: center; }
-            .step-item { justify-content: center; }
+            .main-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .content-left {
+                width: 100%;
+                text-align: center;
+            }
+
+            .step-item {
+                justify-content: center;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div id="app">
-    <div class="container">
-        <div class="header-logo">
-            <a href="#" class="logo">S<span>killLink</span></a>
-        </div>
+    <div id="app">
+        <div class="container">
+            <div class="header-logo">
+                <a href="#" class="logo">S<span>killLink</span></a>
+            </div>
 
-        <div class="main-layout">
-            <div class="content-left">
-                <div class="welcome-text">
-                    <h1>Hey {{ userName }}.</h1>
-                    <h2>Ready for your next big opportunity?</h2>
-                </div>
+            <div class="main-layout">
+                <div class="content-left">
+                    <div class="welcome-text">
+                        <h1>Hey {{ userName }}.</h1>
+                        <h2>Ready for your next big opportunity?</h2>
+                    </div>
 
-               
+
                     <div class="step-item">
                         <i class="fa-solid fa-user"></i>
                         <span>Answer a few questions and start building your profile</span>
@@ -234,70 +277,72 @@
                         <span>Get paid safely and know we're there to help</span>
                     </div>
                 </div>
-            
 
-            <div class="content-right">
-                <div class="profile-card">
-                    <img src="Images/pexels-olly-3777559.jpg" alt="Profile" class="profile-img">
-                    <h3>Amar Abdelaziz</h3>
-                    <span class="job">UX/UI Designer</span>
-                    <div class="stats">
-                        <span>★ 5</span> $65.00/hr <i class="fa-solid fa-briefcase" style="font-size: 12px; color: #333;"></i> 14 jobs
+
+                <div class="content-right">
+                    <div class="profile-card">
+                        <img src="Images/pexels-olly-3777559.jpg" alt="Profile" class="profile-img">
+                        <h3>Amar Abdelaziz</h3>
+                        <span class="job">UX/UI Designer</span>
+                        <div class="stats">
+                            <span>★ 5</span> $65.00/hr <i class="fa-solid fa-briefcase"
+                                style="font-size: 12px; color: #333;"></i> 14 jobs
+                        </div>
+                        <p>"SkillLink has enabled me to increase my rates. I know what I'm bringing to the table and
+                            love the feeling of being able to help a variety of clients."</p>
                     </div>
-                    <p>"SkillLink has enabled me to increase my rates. I know what I'm bringing to the table and love the feeling of being able to help a variety of clients."</p>
-                </div>
-                <div class="next-btn">
-                    <i class="fa-solid fa-chevron-right"></i>
+                    <div class="next-btn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="footer-action">
-            <button class="btn-get-started" @click="startJourney">Get started</button>
+            <div class="footer-action">
+                <button class="btn-get-started" @click="startJourney">Get started</button>
+            </div>
         </div>
     </div>
-</div>
-<script>
-    const { createApp } = Vue;
-    createApp({
-        data() {
-            return {
-                userName: localStorage.getItem('user_name') || 'Guest'
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    userName: localStorage.getItem('user_name') || 'Guest'
+                }
+            },
+            methods: {
+                startJourney() {
+                    const role = localStorage.getItem('user_role');
+                    const token = localStorage.getItem('token');
+
+                    console.log("role:", role);
+                    console.log("token:", token);
+
+                    if (!token) {
+                        alert("Session expired. Please register again.");
+                        window.location.href = "register.html";
+                        return;
+                    }
+
+                    if (role === 'user') {
+                        window.location.href = 'inf-student-profile.html';
+                    }
+                    else if (role === 'client') {
+                        window.location.href = 'inf-client-profile.html';
+                    }
+                    else {
+                        alert("User role not recognized!");
+                    }
+                }
+            },
+            mounted() {
+                if (!localStorage.getItem('token')) {
+                    console.warn("⚠️ Warning: No token found in LocalStorage. Profile page will fail.");
+                }
             }
-        },
-        methods: {
-           startJourney() {
-    const role = localStorage.getItem('user_role');
-    const token = localStorage.getItem('token');
-
-    console.log("role:", role);
-    console.log("token:", token);
-
-    if (!token) {
-        alert("Session expired. Please register again.");
-        window.location.href = "register.html";
-        return;
-    }
-
-    if (role === 'user') {
-        window.location.href = 'inf-student-profile.html';
-    } 
-    else if (role === 'client') {
-        window.location.href = 'inf-client-profile.html';
-    } 
-    else {
-        alert("User role not recognized!");
-    }
-}
-        },
-        mounted() {
-            // كود إضافي: أول ما الصفحة تفتح، لو مفيش توكن اطبعي تحذير
-            if (!localStorage.getItem('token')) {
-                console.warn("⚠️ Warning: No token found in LocalStorage. Profile page will fail.");
-            }
-        }
-    }).mount('#app');
-</script>
+        }).mount('#app');
+    </script>
 
 </body>
+
 </html>
